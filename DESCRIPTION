@@ -1,0 +1,10 @@
+Package: WB
+Version: 0.1
+Date: 2020-10-23
+Title: World Bank
+Authors@R: c(person("Adrian", "Dusa", role = c("aut", "cre"),
+                    email = "dusa.adrian@gmail.com"))
+Depends: R (>= 3.5.0)
+Imports: readODS, admisc
+Description: Functii utile pentru proiectele WB
+License: GPL (>= 2)

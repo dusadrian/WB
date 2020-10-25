@@ -1,0 +1,94 @@
+`makeVars` <- function(ods, js, activator = FALSE, sat = FALSE) {
+    # "~/Lucru/Institutii/Banca Mondiala/2020/WB Child/2020.10/SP.ods"
+    # "~/Lucru/Institutii/Banca Mondiala/2020/WB Child/10_variabile_sp.js"
+    aa <- readODS::read_ods(ods)
+    aa$id <- admisc::trimstr(aa$id)
+    aa$auto[is.na(aa$auto)] <- 0
+
+    sink(js)
+    cat("module.exports = {\n")
+    cat("    questions: {\n")
+    for (i in seq(nrow(aa))) {
+        cat(paste("        '", aa$id[i], "': {\n", sep = ""))
+        cat(paste("            'id': '", aa$id[i], "',\n", sep = ""))
+        if (activator) {
+            cat(paste("            'type': '", aa$type[i], "',\n", sep = ""))
+        }
+        else {
+            itype <- ""
+            if (is.element(aa$type[i], c("number", "double"))) {
+                itype <- aa$type[i] 
+                aa$type[i] <- "input"
+            }
+            cat(paste("            'type': '", aa$type[i], "',\n", sep = ""))
+            cat(paste("            'itype': '", itype, "',\n", sep = ""))
+        }
+        cat(paste("            'value': ", ifelse(aa$type[i] == "checkbox", "'0'", ifelse(aa$active[i] == "" | is.na(aa$active[i]), "'-9'", "'-7'")), ",\n", sep = ""))
+        aa$active[i] <- gsub("false|true", NA, tolower(aa$active[i]))
+        if (aa$auto[i] == 1) {
+            aa$active[i] <- NA
+        }
+        cat(paste("            'disabled': ", ifelse(aa$active[i] == "" | is.na(aa$active[i]), "0", "1"), ",\n", sep = ""))
+        cat(paste("            'order': ", i - 1, ",\n", sep = ""))
+        cat(paste("            'active': '", ifelse(is.na(aa$active[i]), "", aa$active[i]), "',\n", sep = ""))
+        cat(paste("            'error': ''", sep = ""))
+
+        if (aa$type[i] == "radio") {
+            cat(paste(",\n            'checked': 0\n"))
+        }
+        else {
+            cat("\n")
+        }
+
+        cat("        },\n")
+    }
+    cat("    },\n")
+    cat("    questionsOrder: [\n")
+    order <- seq(nrow(aa))
+    if (is.element("order", names(aa))) {
+        if (!identical(as.integer(sort(unique(aa$order))), order)) {
+            sink()
+            message("Numerele de ordine nu sunt in regula.")
+            invisible(return())
+        }
+        order <- aa$order
+    }
+    cat(paste("'", aa$id[order], "'", sep = "", collapse = ", "))
+
+    cat("\n    ]")
+
+    if (sat) {
+        cat(",\n")
+        bb <- aa$id[grepl("_sat", aa$id)]
+        if (length(bb) > 0) {
+            cat("    sate: [\n")
+            cat(paste("'", bb, "'", sep = "", collapse = ", "))
+            cat("\n    ]")
+        }
+    }
+
+    if (activator) {
+        cat(",\n")
+        cat("    activators: {\n")
+        # bb <- paste("instrument.questions.", aa$id, ".value", sep = "")
+        bb <- paste("instrument.questions.", aa$id, ".value", sep = "")
+        for (i in seq(nrow(aa))) {
+            cat(paste("        '", aa$id[i], "': function() {\n            return(", sep = ""))
+            if (aa$active[i] == "" | is.na(aa$active[i])) {
+                aa$active[i] <- "true"
+            }
+            else {
+                aa$active[i] <- gsub("\\&", "&&", aa$active[i])
+                aa$active[i] <- gsub("\\=", "==", aa$active[i])
+                aa$active[i] <- gsub("\\|", "||", aa$active[i])
+                aa$active[i] <- gsub(">==", ">=", aa$active[i])
+                aa$active[i] <- gsub("<==", "<=", aa$active[i])
+                aa$active[i] <- admisc::replaceText(aa$active[i], aa$id, bb)
+            }
+            cat(paste(tolower(aa$active[i]), ")\n        },\n", sep = ""))
+        }
+        cat("    }")
+    }
+    cat("\n}")
+    sink()
+}

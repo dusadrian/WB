@@ -1,0 +1,8 @@
+export(
+    makeVars
+)
+import(admisc)
+import(readODS)
+importFrom("stats", "na.omit")
+importFrom("utils", "packageDescription", "write.csv")
+# S3method(descarca, default)
