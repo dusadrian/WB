@@ -9,12 +9,15 @@ Fisierul js este un modul exportat care contine componentele questions, question
 }
 
 \usage{
-makeVars(ods, js)
+makeVars(ods, sheet = "", js, newstyle = FALSE, sat = FALSE)
 }
 
 \arguments{
   \item{ods}{Calea catre fisierul .ods de unde se citesc informatiile}
+  \item{sheet}{Numele foii care sa fie citita}
   \item{js}{Calea catre fisierul .js unde se scriu informatiile}
+  \item{newstyle}{Pentru activatori}
+  \item{sat}{Adauga si o componenta cu toate variabilele care contin "sat" in nume}
 }
 
 

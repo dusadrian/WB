@@ -2,7 +2,7 @@
 # WB::makeVars("2020.10/Child.ods", "p3wb/page/registrulALT/10_variabile_alt.js", sheet = "ALT")
 
 
-`makeVars` <- function(ods, js, sheet = "", newstyle = FALSE, sat = FALSE) {
+`makeVars` <- function(ods, sheet = "", js, newstyle = FALSE, sat = FALSE) {
     if (identical(sheet, "")) {
         sheet <- 1
     }
