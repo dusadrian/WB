@@ -1,5 +1,5 @@
 `makeVars` <- function(ods, js, sheet = "", newstyle = FALSE, sat = FALSE) {
-    # "~/Lucru/Institutii/Banca Mondiala/2020/WB Child/2020.10/SP.ods"
+    # "~/Lucru/Institutii/Banca Mondiala/2020/WB Child/2020.10/Child.ods"
     # "~/Lucru/Institutii/Banca Mondiala/2020/WB Child/10_variabile_sp.js"
     if (identical(sheet, "")) {
         sheet <- 1
@@ -9,7 +9,9 @@
     aa$id <- tolower(aa$id)
     aa$active <- tolower(aa$active)
     aa$auto[is.na(aa$auto)] <- 0
+    aa$auto[aa$auto != 0] <- 1
     aa$hidden[is.na(aa$hidden)] <- 0
+    aa$hidden[aa$hidden != 0] <- 1
 
     sink(js)
     cat("module.exports = {\n")
