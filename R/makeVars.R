@@ -1,6 +1,8 @@
+# setwd("~/Lucru/Institutii/Banca Mondiala/2020/WB Child/")
+# WB::makeVars("2020.10/Child.ods", "p3wb/page/registrulALT/10_variabile_alt.js", sheet = "ALT")
+
+
 `makeVars` <- function(ods, js, sheet = "", newstyle = FALSE, sat = FALSE) {
-    # "~/Lucru/Institutii/Banca Mondiala/2020/WB Child/2020.10/Child.ods"
-    # "~/Lucru/Institutii/Banca Mondiala/2020/WB Child/10_variabile_sp.js"
     if (identical(sheet, "")) {
         sheet <- 1
     }
@@ -103,3 +105,4 @@
     cat("\n}")
     sink()
 }
+
