@@ -1,9 +1,15 @@
-`makeVars` <- function(ods, js, activator = FALSE, sat = FALSE) {
+`makeVars` <- function(ods, js, sheet = "", newstyle = FALSE, sat = FALSE) {
     # "~/Lucru/Institutii/Banca Mondiala/2020/WB Child/2020.10/SP.ods"
     # "~/Lucru/Institutii/Banca Mondiala/2020/WB Child/10_variabile_sp.js"
-    aa <- readODS::read_ods(ods)
+    if (identical(sheet, "")) {
+        sheet <- 1
+    }
+    aa <- readODS::read_ods(ods, sheet = sheet)
     aa$id <- admisc::trimstr(aa$id)
+    aa$id <- tolower(aa$id)
+    aa$active <- tolower(aa$active)
     aa$auto[is.na(aa$auto)] <- 0
+    aa$hidden[is.na(aa$hidden)] <- 0
 
     sink(js)
     cat("module.exports = {\n")
@@ -11,7 +17,7 @@
     for (i in seq(nrow(aa))) {
         cat(paste("        '", aa$id[i], "': {\n", sep = ""))
         cat(paste("            'id': '", aa$id[i], "',\n", sep = ""))
-        if (activator) {
+        if (newstyle) {
             cat(paste("            'type': '", aa$type[i], "',\n", sep = ""))
         }
         else {
@@ -28,7 +34,9 @@
         if (aa$auto[i] == 1) {
             aa$active[i] <- NA
         }
-        cat(paste("            'disabled': ", ifelse(aa$active[i] == "" | is.na(aa$active[i]), "0", "1"), ",\n", sep = ""))
+        disabled <- 1
+        if (aa$auto[i] == 0 & (aa$active[i] == "" | is.na(aa$active[i]))) disabled <- 0
+        cat(paste("            'disabled': ", disabled, ",\n", sep = ""))
         cat(paste("            'order': ", i - 1, ",\n", sep = ""))
         cat(paste("            'active': '", ifelse(is.na(aa$active[i]), "", aa$active[i]), "',\n", sep = ""))
         cat(paste("            'error': ''", sep = ""))
@@ -49,7 +57,7 @@
         if (!identical(as.integer(sort(unique(aa$order))), order)) {
             sink()
             message("Numerele de ordine nu sunt in regula.")
-            invisible(return())
+            return(invisible(NULL))
         }
         order <- aa$order
     }
@@ -67,9 +75,9 @@
         }
     }
 
-    if (activator) {
+    if (newstyle) {
         cat(",\n")
-        cat("    activators: {\n")
+        cat("    newstyles: {\n")
         # bb <- paste("instrument.questions.", aa$id, ".value", sep = "")
         bb <- paste("instrument.questions.", aa$id, ".value", sep = "")
         for (i in seq(nrow(aa))) {
@@ -79,10 +87,11 @@
             }
             else {
                 aa$active[i] <- gsub("\\&", "&&", aa$active[i])
-                aa$active[i] <- gsub("\\=", "==", aa$active[i])
                 aa$active[i] <- gsub("\\|", "||", aa$active[i])
-                aa$active[i] <- gsub(">==", ">=", aa$active[i])
-                aa$active[i] <- gsub("<==", "<=", aa$active[i])
+                aa$active[i] <- gsub("\\=", "==", aa$active[i])
+                aa$active[i] <- gsub("\\|\\|\\|\\|", "||", aa$active[i])
+                aa$active[i] <- gsub("\\&\\&\\&\\&", "&&", aa$active[i])
+                aa$active[i] <- gsub("====", "==", aa$active[i])
                 aa$active[i] <- admisc::replaceText(aa$active[i], aa$id, bb)
             }
             cat(paste(tolower(aa$active[i]), ")\n        },\n", sep = ""))
