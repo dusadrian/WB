@@ -1,11 +1,12 @@
 # setwd("~/Lucru/Institutii/Banca Mondiala/2020/WB Child/")
-# WB::makeVars("2020.10/Child.ods", "p3wb/page/registrulALT/10_variabile_alt.js", sheet = "ALT")
+# WB::makeVars("2020.10/Child.ods", sheet = "ALT", "p3wb/page/registrulALT/10_variabile_alt.js")
 
 
 `makeVars` <- function(ods, sheet = "", js, newstyle = FALSE, sat = FALSE) {
     if (identical(sheet, "")) {
         sheet <- 1
     }
+    
     aa <- readODS::read_ods(ods, sheet = sheet)
     aa$id <- admisc::trimstr(aa$id)
     aa$id <- tolower(aa$id)
@@ -14,6 +15,33 @@
     aa$auto[aa$auto != 0] <- 1
     aa$hidden[is.na(aa$hidden)] <- 0
     aa$hidden[aa$hidden != 0] <- 1
+
+
+
+    if (newstyle) {
+        # cat(",\n")
+        # cat("    newstyles: {\n")
+        # bb <- paste("instrument.questions.", aa$id, ".value", sep = "")
+        bb <- paste("instrument.questions.", aa$id, ".value", sep = "")
+        for (i in seq(nrow(aa))) {
+            # cat(paste("        '", aa$id[i], "': function() {\n            return(", sep = ""))
+            if (aa$active[i] == "" | is.na(aa$active[i])) {
+                aa$active[i] <- "true"
+            }
+            else {
+                aa$active[i] <- gsub("\\&", "&&", aa$active[i])
+                aa$active[i] <- gsub("\\|", "||", aa$active[i])
+                aa$active[i] <- gsub("\\=", "==", aa$active[i])
+                aa$active[i] <- gsub("\\|\\|\\|\\|", "||", aa$active[i])
+                aa$active[i] <- gsub("\\&\\&\\&\\&", "&&", aa$active[i])
+                aa$active[i] <- gsub("====", "==", aa$active[i])
+                aa$active[i] <- admisc::replaceText(aa$active[i], aa$id, bb)
+            }
+            # cat(paste(tolower(aa$active[i]), ")\n        },\n", sep = ""))
+        }
+        # cat("    }")
+    }
+
 
     sink(js)
     cat("module.exports = {\n")
@@ -36,13 +64,19 @@
         cat(paste("            'value': ", ifelse(aa$type[i] == "checkbox", "'0'", ifelse(aa$active[i] == "" | is.na(aa$active[i]), "'-9'", "'-7'")), ",\n", sep = ""))
         aa$active[i] <- gsub("false|true", NA, tolower(aa$active[i]))
         if (aa$auto[i] == 1) {
-            aa$active[i] <- NA
+            aa$active[i] <- ifelse(newstyle, "true", NA)
         }
         disabled <- 1
         if (aa$auto[i] == 0 & (aa$active[i] == "" | is.na(aa$active[i]))) disabled <- 0
         cat(paste("            'disabled': ", disabled, ",\n", sep = ""))
         cat(paste("            'order': ", i - 1, ",\n", sep = ""))
-        cat(paste("            'active': '", ifelse(is.na(aa$active[i]), "", aa$active[i]), "',\n", sep = ""))
+        if (newstyle) {
+            aa$active[is.na(aa$active)] <- "true"
+            cat(paste("            'active': function() {return(", aa$active[i], ")},\n", sep = ""))
+        }
+        else {
+            cat(paste("            'active': '", ifelse(is.na(aa$active[i]), "", aa$active[i]), "',\n", sep = ""))
+        }
         cat(paste("            'error': ''", sep = ""))
 
         if (aa$type[i] == "radio") {
@@ -77,30 +111,6 @@
             cat(paste("'", bb, "'", sep = "", collapse = ", "))
             cat("\n    ]")
         }
-    }
-
-    if (newstyle) {
-        cat(",\n")
-        cat("    newstyles: {\n")
-        # bb <- paste("instrument.questions.", aa$id, ".value", sep = "")
-        bb <- paste("instrument.questions.", aa$id, ".value", sep = "")
-        for (i in seq(nrow(aa))) {
-            cat(paste("        '", aa$id[i], "': function() {\n            return(", sep = ""))
-            if (aa$active[i] == "" | is.na(aa$active[i])) {
-                aa$active[i] <- "true"
-            }
-            else {
-                aa$active[i] <- gsub("\\&", "&&", aa$active[i])
-                aa$active[i] <- gsub("\\|", "||", aa$active[i])
-                aa$active[i] <- gsub("\\=", "==", aa$active[i])
-                aa$active[i] <- gsub("\\|\\|\\|\\|", "||", aa$active[i])
-                aa$active[i] <- gsub("\\&\\&\\&\\&", "&&", aa$active[i])
-                aa$active[i] <- gsub("====", "==", aa$active[i])
-                aa$active[i] <- admisc::replaceText(aa$active[i], aa$id, bb)
-            }
-            cat(paste(tolower(aa$active[i]), ")\n        },\n", sep = ""))
-        }
-        cat("    }")
     }
     cat("\n}")
     sink()
