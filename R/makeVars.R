@@ -1,5 +1,5 @@
-# setwd("~/Lucru/Institutii/Banca Mondiala/2020/WB Child/")
-# WB::makeVars("2020.10/Child.ods", sheet = "ALT", "p3wb/page/registrulALT/10_variabile_alt.js")
+# setwd("~/Lucru/Institutii/Banca Mondiala/2020/WB Child/p3wb/")
+# WB::makeVars("Child.ods", sheet = "ALT", "page/registrulALT/10_variabile_alt.js")
 
 
 `makeVars` <- function(ods, sheet = "", js, newstyle = FALSE, sat = FALSE) {
@@ -15,7 +15,7 @@
     aa$auto[aa$auto != 0] <- 1
     aa$hidden[is.na(aa$hidden)] <- 0
     aa$hidden[aa$hidden != 0] <- 1
-
+    aa$active[aa$auto == 1] <- NA
 
 
     if (newstyle) {
@@ -62,7 +62,7 @@
             cat(paste("            'itype': '", itype, "',\n", sep = ""))
         }
         cat(paste("            'value': ", ifelse(aa$type[i] == "checkbox", "'0'", ifelse(aa$active[i] == "" | is.na(aa$active[i]), "'-9'", "'-7'")), ",\n", sep = ""))
-        
+
         if (!newstyle) {
             aa$active[i] <- gsub("false|true", NA, tolower(aa$active[i]))
         }
@@ -70,10 +70,13 @@
         if (aa$auto[i] == 1) {
             aa$active[i] <- ifelse(newstyle, "true", NA)
         }
+
         disabled <- 1
         if (aa$auto[i] == 0 & (aa$active[i] == "" | is.na(aa$active[i]))) disabled <- 0
+        
         cat(paste("            'disabled': ", disabled, ",\n", sep = ""))
         cat(paste("            'order': ", i - 1, ",\n", sep = ""))
+
         if (newstyle) {
             aa$active[is.na(aa$active)] <- "true"
             cat(paste("            'active': function() {return(", aa$active[i], ")},\n", sep = ""))
