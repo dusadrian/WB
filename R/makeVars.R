@@ -3,6 +3,9 @@
 
 
 `makeVars` <- function(ods, sheet = "", js, newstyle = FALSE, sat = FALSE) {
+    
+    on.exit(suppressWarnings(sink()))
+    
     if (identical(sheet, "")) {
         sheet <- 1
     }
@@ -44,6 +47,7 @@
 
 
     sink(js)
+    
     cat("module.exports = {\n")
     cat("    questions: {\n")
     for (i in seq(nrow(aa))) {
@@ -120,6 +124,6 @@
         }
     }
     cat("\n}")
-    sink()
+    # sink()
 }
 
