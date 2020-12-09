@@ -18,7 +18,7 @@
     aa$auto[aa$auto != 0] <- 1
     aa$hidden[is.na(aa$hidden)] <- 0
     aa$hidden[aa$hidden != 0] <- 1
-    aa$active[aa$auto == 1] <- NA
+    # aa$active[aa$auto == 1] <- NA
 
 
     if (newstyle) {
@@ -35,6 +35,7 @@
                 aa$active[i] <- gsub("\\&", "&&", aa$active[i])
                 aa$active[i] <- gsub("\\|", "||", aa$active[i])
                 aa$active[i] <- gsub("\\=", "==", aa$active[i])
+                aa$active[i] <- gsub("\\!\\=\\=", "!=", aa$active[i])
                 aa$active[i] <- gsub("\\|\\|\\|\\|", "||", aa$active[i])
                 aa$active[i] <- gsub("\\&\\&\\&\\&", "&&", aa$active[i])
                 aa$active[i] <- gsub("====", "==", aa$active[i])
