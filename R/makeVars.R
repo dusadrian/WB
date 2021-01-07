@@ -102,7 +102,7 @@
         cat("        },\n")
     }
     cat("    },\n")
-    cat("    questionsOrder: [\n")
+    cat("    questionsOrder: [\n        ")
     order <- seq(nrow(aa))
     if (is.element("order", names(aa))) {
         if (!identical(as.integer(sort(unique(aa$order))), order)) {
@@ -112,7 +112,8 @@
         }
         order <- aa$order
     }
-    cat(paste("'", aa$id[order], "'", sep = "", collapse = ", "))
+
+    cat(paste(strwrap(paste("'", aa$id[order], "'", sep = "", collapse = ", "), width = 110), collapse = "\n        "))
 
     cat("\n    ]")
 
@@ -128,4 +129,3 @@
     cat("\n}")
     # sink()
 }
-
