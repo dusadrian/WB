@@ -2,7 +2,7 @@
 # WB::makeVars("Child.ods", sheet = "ALT", "page/registrulALT/10_variabile_alt.js")
 
 
-`makeVars` <- function(ods, sheet = "", js, newstyle = FALSE, sat = FALSE) {
+`makeVars` <- function(ods, sheet = "", js, newstyle = FALSE, sat = FALSE, headers = FALSE) {
     
     on.exit(suppressWarnings(sink()))
     
@@ -36,6 +36,8 @@
                 aa$active[i] <- gsub("\\|", "||", aa$active[i])
                 aa$active[i] <- gsub("\\=", "==", aa$active[i])
                 aa$active[i] <- gsub("\\!\\=\\=", "!=", aa$active[i])
+                aa$active[i] <- gsub("\\>\\=\\=", ">=", aa$active[i])
+                aa$active[i] <- gsub("\\<\\=\\=", "<=", aa$active[i])
                 aa$active[i] <- gsub("\\|\\|\\|\\|", "||", aa$active[i])
                 aa$active[i] <- gsub("\\&\\&\\&\\&", "&&", aa$active[i])
                 aa$active[i] <- gsub("====", "==", aa$active[i])
@@ -113,7 +115,7 @@
         order <- aa$order
     }
 
-    cat(paste(strwrap(paste("'", aa$id[order], "'", sep = "", collapse = ", "), width = 110), collapse = "\n        "))
+    cat(paste(strwrap(paste("'", aa$id, "'", sep = "", collapse = ", "), width = 110), collapse = "\n        "))
 
     cat("\n    ]")
 
@@ -126,6 +128,17 @@
             cat("\n    ]")
         }
     }
+
+    if (headers) {
+        cat(",\n")
+        cat("    exportHeader:[\n")
+        cat(paste("        {'id': '", aa$id, "', 'title': '", toupper(aa$id), "'},", sep = "", collapse = "\n"))
+        cat("\n    ]")
+    }
+
     cat("\n}")
+
+
+
     # sink()
 }
