@@ -2,7 +2,7 @@
 # WB::makeVars("Child.ods", sheet = "ALT", "page/registrulALT/10_variabile_alt.js")
 
 
-`makeVars` <- function(ods, sheet = "", js, newstyle = FALSE, sat = FALSE, headers = FALSE) {
+`makeVars` <- function(ods, sheet = "", js, newstyle = TRUE, sat = FALSE, headers = TRUE) {
     
     on.exit(suppressWarnings(sink()))
     
