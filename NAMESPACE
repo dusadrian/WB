@@ -1,5 +1,6 @@
 export(
-    makeVars
+    makeVars,
+    splitHtml
 )
 import(admisc)
 import(readxl)
