@@ -2,7 +2,7 @@ export(
     makeVars
 )
 import(admisc)
-import(readODS)
+import(readxl)
 importFrom("stats", "na.omit")
 importFrom("utils", "packageDescription", "write.csv")
 # S3method(descarca, default)

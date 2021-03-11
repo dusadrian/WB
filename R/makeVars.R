@@ -1,8 +1,8 @@
 # setwd("~/Lucru/Institutii/Banca Mondiala/2020/WB Child/p3wb/")
-# WB::makeVars("Child.ods", sheet = "ALT", "page/registrulALT/10_variabile_alt.js")
+# WB::makeVars("Child.xlsx", sheet = "ALT", "page/registrulALT/10_variabile_alt.js")
 
 
-`makeVars` <- function(ods, sheet = "", js, newstyle = TRUE, sat = FALSE, headers = TRUE) {
+`makeVars` <- function(excel, sheet = "", js, newstyle = TRUE, sat = FALSE, headers = TRUE, ...) {
     
     on.exit(suppressWarnings(sink()))
     
@@ -10,7 +10,7 @@
         sheet <- 1
     }
     
-    aa <- readODS::read_ods(ods, sheet = sheet)
+    aa <- readxl::read_excel(excel, sheet = sheet)
     aa$id <- admisc::trimstr(aa$id)
     aa$id <- tolower(aa$id)
     aa$active <- tolower(aa$active)
@@ -48,6 +48,21 @@
         # cat("    }")
     }
 
+    sections <- is.element("section", names(aa))
+    if (sections) {
+        pos <- which(!is.na(aa$section))
+        snames <- aa$section[pos]
+        pos[1] <- 1
+        for (i in seq(length(pos))) {
+            if (i < length(pos)) {
+                aa$section[seq(pos[i], pos[i + 1] - 1)] <- snames[i]
+            }
+            else {
+                aa$section[seq(pos[i], nrow(aa))] <- snames[i]
+            }
+        }
+    }
+
 
     sink(js)
     
@@ -56,6 +71,11 @@
     for (i in seq(nrow(aa))) {
         cat(paste("        '", aa$id[i], "': {\n", sep = ""))
         cat(paste("            'id': '", aa$id[i], "',\n", sep = ""))
+        
+        if (sections) {
+            cat(paste("            'section': '", aa$section[i], "',\n", sep = ""))
+        }
+
         if (newstyle) {
             cat(paste("            'type': '", aa$type[i], "',\n", sep = ""))
         }
