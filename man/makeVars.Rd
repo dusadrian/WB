@@ -9,7 +9,7 @@ Fisierul js este un modul exportat care contine componentele questions, question
 }
 
 \usage{
-makeVars(excel, sheet = "", js, newstyle = TRUE, sat = FALSE, headers = TRUE, ...)
+makeVars(excel, sheet = "", js, newstyle = TRUE, sat = FALSE, headers = TRUE, node = FALSE, ...)
 }
 
 \arguments{
@@ -19,6 +19,7 @@ makeVars(excel, sheet = "", js, newstyle = TRUE, sat = FALSE, headers = TRUE, ..
   \item{newstyle}{Pentru activatori}
   \item{sat}{Adauga si o componenta cu toate variabilele care contin "sat" in nume}
   \item{headers}{Componenta de exportHeader}
+  \item{node}{Aplicatie Electron sau server}
   \item{...}{Alte argumente}
 }
 

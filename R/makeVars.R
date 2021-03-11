@@ -2,7 +2,7 @@
 # WB::makeVars("Child.xlsx", sheet = "ALT", "page/registrulALT/10_variabile_alt.js")
 
 
-`makeVars` <- function(excel, sheet = "", js, newstyle = TRUE, sat = FALSE, headers = TRUE, ...) {
+`makeVars` <- function(excel, sheet = "", js, newstyle = TRUE, sat = FALSE, headers = TRUE, node = FALSE, ...) {
     
     on.exit(suppressWarnings(sink()))
     
@@ -66,8 +66,14 @@
 
     sink(js)
     
-    cat("module.exports = {\n")
-    cat("    questions: {\n")
+    if (node) {
+        cat("module.exports = {\n")
+        cat("    questions: {\n")
+    }
+    else {
+        cat("var questions = {\n")
+    }
+    
     for (i in seq(nrow(aa))) {
         cat(paste("        '", aa$id[i], "': {\n", sep = ""))
         cat(paste("            'id': '", aa$id[i], "',\n", sep = ""))
@@ -123,8 +129,16 @@
 
         cat("        },\n")
     }
-    cat("    },\n")
-    cat("    questionsOrder: [\n        ")
+
+    if (node) {
+        cat("    },\n")
+        cat("    questionsOrder: [\n        ")
+    }
+    else {
+        cat("    };\n\n")
+        cat("var questionsOrder = [\n        ")
+    }
+
     order <- seq(nrow(aa))
     if (is.element("order", names(aa))) {
         if (!identical(as.integer(sort(unique(aa$order))), order)) {
@@ -150,13 +164,21 @@
     }
 
     if (headers) {
-        cat(",\n")
-        cat("    exportHeader:[\n")
+        if (node) {
+            cat(",\n")
+            cat("    exportHeader:[\n")
+        }
+        else {
+            cat(";\n\n")
+            cat("var exportHeader = [\n")
+        }
         cat(paste("        {'id': '", aa$id, "', 'title': '", toupper(aa$id), "'},", sep = "", collapse = "\n"))
         cat("\n    ]")
     }
 
-    cat("\n}")
+    if (node) {
+        cat("\n}")
+    }
 
 
 
