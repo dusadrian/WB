@@ -48,19 +48,22 @@
         # cat("    }")
     }
 
-    sections <- is.element("section", names(aa))
-    if (sections) {
+    
+    if (is.element("section", names(aa))) {
         pos <- which(!is.na(aa$section))
         snames <- aa$section[pos]
         pos[1] <- 1
         for (i in seq(length(pos))) {
             if (i < length(pos)) {
-                aa$section[seq(pos[i], pos[i + 1] - 1)] <- snames[i]
+                aa$section[seq(pos[i], pos[i + 1] - 1)] <- i
             }
             else {
-                aa$section[seq(pos[i], nrow(aa))] <- snames[i]
+                aa$section[seq(pos[i], nrow(aa))] <- i
             }
         }
+    }
+    else {
+        aa$section <- 1
     }
 
 
@@ -78,9 +81,7 @@
         cat(paste("        '", aa$id[i], "': {\n", sep = ""))
         cat(paste("            'id': '", aa$id[i], "',\n", sep = ""))
         
-        if (sections) {
-            cat(paste("            'section': '", aa$section[i], "',\n", sep = ""))
-        }
+        cat(paste("            'section': ", aa$section[i], ",\n", sep = ""))
 
         if (newstyle) {
             cat(paste("            'type': '", aa$type[i], "',\n", sep = ""))
@@ -94,7 +95,7 @@
             cat(paste("            'type': '", aa$type[i], "',\n", sep = ""))
             cat(paste("            'itype': '", itype, "',\n", sep = ""))
         }
-        cat(paste("            'value': ", ifelse(aa$type[i] == "checkbox", "'0'", ifelse(aa$active[i] == "" | is.na(aa$active[i]), "'-9'", "'-7'")), ",\n", sep = ""))
+        cat(paste("            'value': ", ifelse(aa$type[i] == "checkbox", "0", ifelse(aa$active[i] == "" | is.na(aa$active[i]), "-9", "-7")), ",\n", sep = ""))
 
         if (!newstyle) {
             aa$active[i] <- gsub("false|true", NA, tolower(aa$active[i]))
