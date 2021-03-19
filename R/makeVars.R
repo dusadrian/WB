@@ -95,7 +95,7 @@
             cat(paste("            'type': '", aa$type[i], "',\n", sep = ""))
             cat(paste("            'itype': '", itype, "',\n", sep = ""))
         }
-        cat(paste("            'value': ", ifelse(aa$type[i] == "checkbox", "0", ifelse(aa$active[i] == "" | is.na(aa$active[i]), "-9", "-7")), ",\n", sep = ""))
+        cat(paste("            'value': ", ifelse(aa$type[i] == "checkbox", "0", ifelse(aa$active[i] == "true" | is.na(aa$active[i]), "-9", "-7")), ",\n", sep = ""))
 
         if (!newstyle) {
             aa$active[i] <- gsub("false|true", NA, tolower(aa$active[i]))
