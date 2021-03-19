@@ -13,7 +13,7 @@
     aa <- readxl::read_excel(excel, sheet = sheet)
     aa$id <- admisc::trimstr(aa$id)
     aa$id <- tolower(aa$id)
-    aa$active <- tolower(aa$active)
+    aa$active <- admisc::trimstr(tolower(aa$active))
     aa$auto[is.na(aa$auto)] <- 0
     aa$auto[aa$auto != 0] <- 1
     aa$hidden[is.na(aa$hidden)] <- 0
@@ -95,7 +95,7 @@
             cat(paste("            'type': '", aa$type[i], "',\n", sep = ""))
             cat(paste("            'itype': '", itype, "',\n", sep = ""))
         }
-        cat(paste("            'value': ", ifelse(aa$type[i] == "checkbox", "0", ifelse(aa$active[i] == "true" | is.na(aa$active[i]), "-9", "-7")), ",\n", sep = ""))
+        cat(paste("            'value': ", ifelse(aa$type[i] == "checkbox", "0", ifelse(aa$active[i] == "true" | aa$active[i] == "" | is.na(aa$active[i]), "-9", "-7")), ",\n", sep = ""))
 
         if (!newstyle) {
             aa$active[i] <- gsub("false|true", NA, tolower(aa$active[i]))
