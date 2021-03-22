@@ -106,7 +106,7 @@
         }
 
         disabled <- 1
-        if (aa$auto[i] == 0 & (aa$active[i] == "" | is.na(aa$active[i]))) disabled <- 0
+        if (aa$auto[i] == 0 & (aa$active[i] == "" | aa$active[i] == "true" | is.na(aa$active[i]))) disabled <- 0
         
         cat(paste("            'disabled': ", disabled, ",\n", sep = ""))
         cat(paste("            'hidden': ", ifelse(aa$hidden[i], "true", "false"), ",\n", sep = ""))
