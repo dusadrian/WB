@@ -27,14 +27,12 @@
         "    <div class=\"col-md-12\">",
         "        <div class=\"card border-secondary mb-3\">",
         "            <div class=\"card-body\">",
-        "                <form>",
         "                    @include('instruments.instrument-buttons')",
         "                    "
     )
 
     footer <- c(
         "",
-        "                </form>",
         "",
         "            </div>",
         "        </div>",
