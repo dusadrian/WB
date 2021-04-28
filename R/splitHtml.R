@@ -27,8 +27,8 @@
         "    <div class=\"col-md-12\">",
         "        <div class=\"card border-secondary mb-3\">",
         "            <div class=\"card-body\">",
-        "                    @include('instruments.instrument-buttons')",
-        "                    "
+        "                @include('instruments.instrument-buttons')",
+        "                "
     )
 
     footer <- c(
