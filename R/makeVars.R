@@ -2,7 +2,7 @@
 # WB::makeVars("Child.xlsx", sheet = "ALT", "page/registrulALT/10_variabile_alt.js")
 
 
-`makeVars` <- function(excel, sheet = "", js, newstyle = TRUE, sat = FALSE, headers = TRUE, node = FALSE, ...) {
+`makeVars` <- function(excel, sheet = "", js, newstyle = TRUE, sat = FALSE, headers = TRUE, node = FALSE, number = FALSE, ...) {
     
     on.exit(suppressWarnings(sink()))
     
@@ -25,7 +25,7 @@
         # cat(",\n")
         # cat("    newstyles: {\n")
         # bb <- paste("instrument.questions.", aa$id, ".value", sep = "")
-        bb <- paste("instrument.questions.", aa$id, ".value", sep = "")
+        bb <- paste(ifelse(number, "Number(", ""), "instrument.questions.", aa$id, ".value", ifelse(number, ")", ""), sep = "")
         for (i in seq(nrow(aa))) {
             # cat(paste("        '", aa$id[i], "': function() {\n            return(", sep = ""))
             if (aa$active[i] == "" | is.na(aa$active[i])) {
