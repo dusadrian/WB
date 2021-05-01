@@ -2,7 +2,9 @@
 # WB::makeVars("Child.xlsx", sheet = "ALT", "page/registrulALT/10_variabile_alt.js")
 
 
-`makeVars` <- function(excel, sheet = "", js, newstyle = TRUE, sat = FALSE, headers = TRUE, node = FALSE, number = FALSE, ...) {
+`makeVars` <- function(
+    excel, sheet = "", js, newstyle = TRUE, sat = FALSE,
+    headers = TRUE, node = FALSE, number = FALSE, ...) {
     
     on.exit(suppressWarnings(sink()))
     
