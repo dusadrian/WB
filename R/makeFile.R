@@ -43,6 +43,11 @@
         )
     )
 
+    if (nrow(data) == 0) {
+        cat("\n")
+        stop(simpleError("Nu sunt date pentru acest instrument.\n\n"))
+    }
+
     instruments <- DBI::dbGetQuery(con, "SELECT id, folder FROM instruments")
 
     DBI::dbDisconnect(con)
@@ -63,6 +68,7 @@
     nms <- names(dataDscr)
     mdata <- matrix(NA, ncol = length(nms), nrow = length(answer_id))
     colnames(mdata) <- nms
+
 
     for (i in seq(length(answer_id))) {
         sdata <- data[data$answer_id == answer_id[i], ]
