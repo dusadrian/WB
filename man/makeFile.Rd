@@ -10,7 +10,7 @@ Produce un fisier SPSS ori Stata pentru analiza statistica a datelor.
 
 \usage{
 makeFile(
-    instrument = NULL, type = NULL, partial = FALSE,
+    instrument = NULL, type = NULL, partial = FALSE, destination = "~",
     host = "", port = NULL, dbname = "", user = "", password = "")
 }
 
@@ -18,6 +18,7 @@ makeFile(
   \item{instrument}{ID-ul instrumentului}
   \item{type}{SPSS sau Stata}
   \item{partial}{Descarca doar chestionarele complete sau (si) pe cele partiale}
+  \item{destination}{Directorul destinatie unde sa fie salvat fisierul}
   \item{host}{Adresa IP a serveriului MySQL}
   \item{port}{Portul, daca e nevoie}
   \item{dbname}{Numele bazei de date}

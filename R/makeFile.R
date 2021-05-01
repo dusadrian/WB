@@ -1,4 +1,5 @@
-`makeFile` <- function(instrument = NULL, type = NULL, partial = FALSE,
+`makeFile` <- function(
+    instrument = NULL, type = NULL, partial = FALSE, destination = "~",
     host = "127.0.0.1", port = NULL, dbname = "", user = "", password = "") {
 
     if (is.null(type)) {
@@ -155,14 +156,13 @@
         mdata[, i] <- x
     }
 
+    filename <- paste(instruments$folder[instruments$id == instrument],
+        ifelse(toupper(type) == "SPSS", "sav", "dta") , sep = ".")
+
     if (toupper(type) == "SPSS") {
-        haven::write_sav(mdata,
-            path = paste(instruments$folder[instruments$id == instrument], "sav", sep = ".")
-        )
+        haven::write_sav(mdata, path = file.path(destination, filename))
     }
     else if (toupper(type) == "STATA") {
-        haven::write_dta(mdata,
-            path = paste(instruments$folder[instruments$id == instrument], "dta", sep = ".")
-        )
+        haven::write_dta(mdata, path = file.path(destination, filename))
     }
 }
