@@ -12,14 +12,26 @@
         }
     }
 
-    con <- DBI::dbConnect(
-        RMariaDB::MariaDB(),
-        host = as.character(host),
-        port = ifelse(is.null(port), NULL, as.character(port)),
-        dbname = dbname,
-        user = user,
-        password = password
-    )
+    
+    if (is.null(port)) {
+        con <- DBI::dbConnect(
+            RMariaDB::MariaDB(),
+            host = as.character(host),
+            dbname = dbname,
+            user = user,
+            password = password
+        )
+    }
+    else {
+        con <- DBI::dbConnect(
+            RMariaDB::MariaDB(),
+            host = as.character(host),
+            port = as.character(port),
+            dbname = dbname,
+            user = user,
+            password = password
+        )
+    }
 
     data <- DBI::dbGetQuery(con, 
         sprintf(
@@ -33,6 +45,7 @@
     instruments <- DBI::dbGetQuery(con, "SELECT id, folder FROM instruments")
 
     DBI::dbDisconnect(con)
+
 
     
     dataDscr <- codebook[[as.character(instrument)]]$dataDscr
