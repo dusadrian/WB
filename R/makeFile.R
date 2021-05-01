@@ -144,6 +144,7 @@
                 labels[labels == -1] <- haven::tagged_na('a')
                 labels[labels == -7] <- haven::tagged_na('b')
                 labels[labels == -9] <- haven::tagged_na('c')
+                names(labels) <- lnms
 
                 if (is.numeric(x)) {
                     x <- haven::labelled(x, label = cb[["label"]], labels = labels)
