@@ -63,28 +63,16 @@
     mdata[grepl("amp;amp;amp;", mdata)] <- "-"
     mdata[is.element(mdata, "#")] <- "-"
 
+    if (toupper(type) == "SPSS") {
+        mdata <- caractere(mdata)
+    }
+
     mdata[is.element(mdata, -77)] <- -7
 
-    if (toupper(type) == "SPSS") {
-        mdata <- gsub("\t", " ", mdata) # tab-uri
-        mdata <- gsub(paste(c(minus, "\x96"), collapse = "|"), "-", mdata)
-        mdata <- gsub(ghilimele, "\"", mdata)
-        mdata <- gsub(paste(c(dots, "\xfc\xbe\x8d\x93\xa0\xbc"), collapse = "|"), "...", mdata)
-        mdata <- gsub(imic, "i", mdata)
-        mdata <- gsub(imare, "I", mdata)
-        mdata <- gsub(amic, "a", mdata)
-        mdata <- gsub(amare, "A", mdata)
-        mdata <- gsub(smic, "s", mdata)
-        mdata <- gsub(smare, "S", mdata)
-        mdata <- gsub(tmic, "t", mdata)
-        mdata <- gsub(tmare, "T", mdata)
-        mdata <- gsub(apostrof, "'", mdata)
-    }
-    
     mdata <- as.data.frame(mdata)
 
     for (i in seq(ncol(mdata))) {
-        
+        # print(nms[i])
         cb <- dataDscr[[nms[i]]]
         x <- mdata[, i]
 
@@ -113,7 +101,6 @@
             if (!is.null(labels)) {
                 lnms <- names(labels)
                 labels <- as.character(labels)
-                names(labels) <- lnms
             }
 
             if (!is.null(missing)) {
@@ -124,12 +111,20 @@
             if (!is.null(labels)) {
                 lnms <- names(labels)
                 labels <- as.integer(labels)
-                names(labels) <- lnms
             }
         }
         
         if (toupper(type) == "SPSS") {
-            x <- haven::labelled_spss(x, label = cb[["label"]], labels = labels, na_values = missing)
+            label <- cb[["label"]]
+            if (!is.null(label)) {
+                label <- caractere(label)
+            }
+
+            if (!is.null(labels)) {
+                names(labels) <- caractere(lnms)
+            }
+
+            x <- haven::labelled_spss(x, label = label, labels = labels, na_values = missing)
         }
         else if (toupper(type) == "STATA") {
             if (!is.null(labels)) {
@@ -148,8 +143,7 @@
 
     if (toupper(type) == "SPSS") {
         haven::write_sav(mdata,
-            path = paste(instruments$folder[instruments$id == instrument], "sav", sep = "."),
-            compress = TRUE
+            path = paste(instruments$folder[instruments$id == instrument], "sav", sep = ".")
         )
     }
     else if (toupper(type) == "STATA") {
@@ -158,10 +152,3 @@
         )
     }
 }
-
-
-# WITH tmp AS (
-#     SELECT answer_id, name, value FROM answer_values
-#     LEFT JOIN answers ON answers.id = answer_values.answer_id
-#     WHERE partial = 0 AND instrument_id = 1
-# ) SELECT name FROM tmp limit 20;
