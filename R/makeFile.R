@@ -43,16 +43,14 @@
         )
     )
 
-    if (nrow(data) == 0) {
-        cat("\n")
-        stop(simpleError("Nu sunt date pentru acest instrument.\n\n"))
-    }
-
     instruments <- DBI::dbGetQuery(con, "SELECT id, folder FROM instruments")
 
     DBI::dbDisconnect(con)
 
-
+    if (nrow(data) == 0) {
+        cat("\n")
+        stop(simpleError("Nu sunt date pentru acest instrument.\n\n"))
+    }
     
     dataDscr <- codebook[[as.character(instrument)]]$dataDscr
 
