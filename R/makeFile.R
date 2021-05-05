@@ -80,14 +80,14 @@
     mdata <- gsub(",,-,,", "-", mdata)
     mdata[grepl("amp;amp;amp;", mdata)] <- "-"
     mdata[is.element(mdata, "#")] <- "-"
+    mdata[is.element(mdata, -77)] <- -7
+    mdata <- as.data.frame(mdata)
 
     if (toupper(type) == "SPSS") {
-        mdata <- caractere(mdata)
+        mdata[] <- lapply(mdata, caractere)
     }
 
-    mdata[is.element(mdata, -77)] <- -7
-
-    mdata <- as.data.frame(mdata)
+    
 
     for (i in seq(ncol(mdata))) {
         # print(nms[i])
@@ -137,6 +137,7 @@
             if (!is.null(label)) {
                 label <- caractere(label)
             }
+            
 
             if (!is.null(labels)) {
                 names(labels) <- caractere(lnms)
