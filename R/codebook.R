@@ -15659,6 +15659,12 @@ codebook <- list(
                 na_values = c(-7),
                 type = "string",
                 measurement = "nominal"
+            ),
+            obs_instr = list(
+                question = "obs_instr",
+                label = "Observații instrument",
+                type = "string",
+                measurement = "nominal"
             )
         )
     ),
@@ -24702,6 +24708,12 @@ codebook <- list(
                 missing = c(-7),
                 type = "string",
                 measurement = "nominal"
+            ),
+            obs_instr = list(
+                question = "obs_instr",
+                label = "Observații instrument",
+                type = "string",
+                measurement = "nominal"
             )
         )
     ),
@@ -31259,8 +31271,13 @@ codebook <- list(
                 missing = c(-7),
                 type = "string",
                 measurement = "nominal"
+            ),
+            obs_instr = list(
+                question = "obs_instr",
+                label = "Observații instrument",
+                type = "string",
+                measurement = "nominal"
             )
-
         )
     ),
 
@@ -37365,8 +37382,13 @@ codebook <- list(
                 missing = c(-7),
                 type = "string",
                 measurement = "nominal"
+            ),
+            obs_instr = list(
+                question = "obs_instr",
+                label = "Observații instrument",
+                type = "string",
+                measurement = "nominal"
             )
-
         )
     ),
 
@@ -47462,6 +47484,12 @@ codebook <- list(
                 missing = c(-7),
                 type = "string",
                 measurement = "nominal"
+            ),
+            obs_instr = list(
+                question = "obs_instr",
+                label = "Observații instrument",
+                type = "string",
+                measurement = "nominal"
             )
         )
     ),
@@ -50666,6 +50694,12 @@ codebook <- list(
                 values = c(
                     "Nu se aplică" = -7),
                 missing = c(-7),
+                type = "string",
+                measurement = "nominal"
+            ),
+            obs_instr = list(
+                question = "obs_instr",
+                label = "Observații instrument",
                 type = "string",
                 measurement = "nominal"
             )
@@ -62081,6 +62115,12 @@ codebook <- list(
                 missing = c(-7),
                 type = "string",
                 measurement = "nominal"
+            ),
+            obs_instr = list(
+                question = "obs_instr",
+                label = "Observații instrument",
+                type = "string",
+                measurement = "nominal"
             )
         )
     ),
@@ -69794,6 +69834,12 @@ codebook <- list(
                 label = "Alte observații",
                 type = "string",
                 measurement = "nominal"
+            ),
+            obs_instr = list(
+                question = "obs_instr",
+                label = "Observații instrument",
+                type = "string",
+                measurement = "nominal"
             )
         )
     ),
@@ -73383,6 +73429,12 @@ codebook <- list(
                 labels = c(
                     "Nu se aplică" = -7),
                 na_labels = c(-7),
+                type = "string",
+                measurement = "nominal"
+            ),
+            obs_instr = list(
+                question = "obs_instr",
+                label = "Observații instrument",
                 type = "string",
                 measurement = "nominal"
             )
