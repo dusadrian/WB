@@ -146,16 +146,14 @@
             x <- haven::labelled_spss(x, label = label, labels = labels, na_values = missing)
         }
         else if (toupper(type) == "STATA") {
-            if (!is.null(labels)) {
+            if (!is.null(labels) && is.numeric(x)) {
                 labels[labels == -1] <- haven::tagged_na('a')
                 labels[labels == -7] <- haven::tagged_na('b')
                 labels[labels == -9] <- haven::tagged_na('c')
                 names(labels) <- lnms
-
-                if (is.numeric(x)) {
-                    x <- haven::labelled(x, label = cb[["label"]], labels = labels)
-                }
             }
+            
+            x <- haven::labelled(x, label = cb[["label"]], labels = labels)
         }
 
         mdata[, i] <- x
