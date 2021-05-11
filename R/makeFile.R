@@ -91,6 +91,7 @@
         # print(nms[i])
 
         cb <- dataDscr[[nms[i]]]
+        x <- mdata[, i]
 
         labels <- cb[["labels"]]
         if (is.null(labels)) {
@@ -105,7 +106,6 @@
         if (is.null(missing)) {
             missing <- cb[["na_values"]]
         }
-        x <- mdata[, i]
 
         if (!is.null(cb$type) && cb$type == "string") {
             x <- as.character(x)
