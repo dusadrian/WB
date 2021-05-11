@@ -90,6 +90,8 @@
     for (i in seq(ncol(mdata))) {
         # print(nms[i])
 
+        cb <- dataDscr[[nms[i]]]
+
         labels <- cb[["labels"]]
         if (is.null(labels)) {
             labels <- cb[["values"]]
@@ -103,8 +105,6 @@
         if (is.null(missing)) {
             missing <- cb[["na_values"]]
         }
-
-        cb <- dataDscr[[nms[i]]]
         x <- mdata[, i]
 
         if (!is.null(cb$type) && cb$type == "string") {
