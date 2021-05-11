@@ -92,7 +92,7 @@
         cb <- dataDscr[[nms[i]]]
         x <- mdata[, i]
 
-        if (dataDscr$type == "string") {
+        if (!is.null(dataDscr$type) && dataDscr$type == "string") {
             x <- as.character(x)
         }
         else if (admisc::possibleNumeric(x)) {
@@ -168,16 +168,27 @@
         }
 
         mdata[, i] <- x
+        
+        if (nms[i] == "a2bmediu") {
+            print(class(x))
+        }
+            
     }
-
+    return(mdata)
     mdata[] <- lapply(mdata, function(x) {
+        attrx <- attributes(x)
         if (is.factor(x)) {
-            attrx <- attributes(x)
+            
             attrx$class <- setdiff(attrx$class, "factor")
             x <- as.character(x)
-            x <- strtrim(x, 244)
-            attributes(x) <- attrx
         }
+        
+        if (is.character(x)) {
+            x <- strtrim(x, 244)
+        }
+        
+        attributes(x) <- attrx
+
         return(x)
     })
 
