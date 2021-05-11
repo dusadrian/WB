@@ -87,17 +87,20 @@
         mdata[] <- lapply(mdata, caractere)
     }
 
-    
-
     for (i in seq(ncol(mdata))) {
         # print(nms[i])
         cb <- dataDscr[[nms[i]]]
         x <- mdata[, i]
 
         if (admisc::possibleNumeric(x)) {
-            x <- as.integer(admisc::asNumeric(x))
 
-            if (toupper(type) == "STATA") {
+            x <- admisc::asNumeric(x)
+
+            if (admisc::wholeNumeric(x)) {
+                x <- as.integer(x)
+            }
+
+            if (toupper(type) == "STATA" && any(x < 0)) {
                 x[x == -1] <- haven::tagged_na('a')
                 x[x == -7] <- haven::tagged_na('b')
                 x[x == -9] <- haven::tagged_na('c')
@@ -146,14 +149,19 @@
             x <- haven::labelled_spss(x, label = label, labels = labels, na_values = missing)
         }
         else if (toupper(type) == "STATA") {
-            if (!is.null(labels) && is.numeric(x)) {
-                labels[labels == -1] <- haven::tagged_na('a')
-                labels[labels == -7] <- haven::tagged_na('b')
-                labels[labels == -9] <- haven::tagged_na('c')
-                names(labels) <- lnms
+            
+            if (is.numeric(x)) {
+                if (!is.null(labels)) {
+                    labels[labels == -1] <- haven::tagged_na('a')
+                    labels[labels == -7] <- haven::tagged_na('b')
+                    labels[labels == -9] <- haven::tagged_na('c')
+                    names(labels) <- lnms
+
+                    x <- haven::labelled(x, label = cb[["label"]], labels = labels)
+                }
             }
             
-            x <- haven::labelled(x, label = cb[["label"]], labels = labels)
+            attr(x, "label") <- cb[["label"]]
         }
 
         mdata[, i] <- x
