@@ -160,9 +160,6 @@
                     x <- haven::labelled(x, label = cb[["label"]], labels = labels)
                 }
             }
-            else if (is.character(x)) {
-                x <- strtrim(x, 244)
-            }
             
             attr(x, "label") <- cb[["label"]]
         }
@@ -173,6 +170,7 @@
     mdata[] <- lapply(mdata, function(x) {
         if (is.factor(x)) {
             x <- as.character(x)
+            x <- strtrim(x, 244)
         }
         return(x)
     })
