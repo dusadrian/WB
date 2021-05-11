@@ -89,6 +89,21 @@
 
     for (i in seq(ncol(mdata))) {
         # print(nms[i])
+
+        labels <- cb[["labels"]]
+        if (is.null(labels)) {
+            labels <- cb[["values"]]
+        }
+
+        if (any(is.element(x, -7)) && !is.element(labels, -7)) {
+            labels <- c(labels, c("Nu se aplică" = -7))
+        }
+        
+        missing <- cb[["missing"]]
+        if (is.null(missing)) {
+            missing <- cb[["na_values"]]
+        }
+
         cb <- dataDscr[[nms[i]]]
         x <- mdata[, i]
 
@@ -108,16 +123,6 @@
                 x[x == -7] <- haven::tagged_na('b')
                 x[x == -9] <- haven::tagged_na('c')
             }
-        }
-
-        labels <- cb[["labels"]]
-        if (is.null(labels)) {
-            labels <- cb[["values"]]
-        }
-        
-        missing <- cb[["missing"]]
-        if (is.null(missing)) {
-            missing <- cb[["na_values"]]
         }
 
         if (is.character(x)) {
