@@ -174,7 +174,7 @@
         }
             
     }
-    return(mdata)
+    
     mdata[] <- lapply(mdata, function(x) {
         attrx <- attributes(x)
         if (is.factor(x)) {
@@ -186,7 +186,7 @@
         if (is.character(x)) {
             x <- strtrim(x, 244)
         }
-        
+
         attributes(x) <- attrx
 
         return(x)
