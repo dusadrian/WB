@@ -170,6 +170,13 @@
         mdata[, i] <- x
     }
 
+    mdata[] <- lapply(mdata, function(x) {
+        if (is.factor(x)) {
+            x <- as.character(x)
+        }
+        return(x)
+    })
+
     filename <- paste(instruments$folder[instruments$id == instrument],
         ifelse(toupper(type) == "SPSS", "sav", "dta") , sep = ".")
 
