@@ -92,7 +92,7 @@
         cb <- dataDscr[[nms[i]]]
         x <- mdata[, i]
 
-        if (!is.null(dataDscr$type) && dataDscr$type == "string") {
+        if (!is.null(cb$type) && cb$type == "string") {
             x <- as.character(x)
         }
         else if (admisc::possibleNumeric(x)) {
@@ -168,11 +168,6 @@
         }
 
         mdata[, i] <- x
-        
-        if (nms[i] == "a2bmediu") {
-            print(class(x))
-        }
-            
     }
     
     mdata[] <- lapply(mdata, function(x) {
