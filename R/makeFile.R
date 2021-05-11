@@ -92,7 +92,10 @@
         cb <- dataDscr[[nms[i]]]
         x <- mdata[, i]
 
-        if (admisc::possibleNumeric(x)) {
+        if (dataDscr$type == "string") {
+            x <- as.character(x)
+        }
+        else if (admisc::possibleNumeric(x)) {
 
             x <- admisc::asNumeric(x)
 
@@ -169,8 +172,11 @@
 
     mdata[] <- lapply(mdata, function(x) {
         if (is.factor(x)) {
+            attrx <- attributes(x)
+            attrx$class <- setdiff(attrx$class, "factor")
             x <- as.character(x)
             x <- strtrim(x, 244)
+            attributes(x) <- attrx
         }
         return(x)
     })
