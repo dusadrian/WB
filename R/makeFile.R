@@ -160,6 +160,9 @@
                     x <- haven::labelled(x, label = cb[["label"]], labels = labels)
                 }
             }
+            else if (is.character(x)) {
+                x <- strtrim(x, 244)
+            }
             
             attr(x, "label") <- cb[["label"]]
         }
