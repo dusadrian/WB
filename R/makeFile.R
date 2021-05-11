@@ -95,7 +95,7 @@
             labels <- cb[["values"]]
         }
 
-        if (any(is.element(x, -7)) && !is.element(labels, -7)) {
+        if (any(is.element(x, -7)) && all(!is.element(labels, -7))) {
             labels <- c(labels, c("Nu se aplică" = -7))
         }
         
