@@ -1,5 +1,9 @@
 hideFiles <- function(gitdir = NULL, project = NULL) {
 
+    if (Sys.info()[["sysname"]] != "Windows") {
+        stop("Numai pentru Windows...")
+    }
+
     if (is.null(project)) {
         stop("Numele proiectului lipseste.")
     }
