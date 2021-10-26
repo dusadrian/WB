@@ -3,8 +3,8 @@
 
 
 `makeVars` <- function(
-    excel, sheet = "", js, newstyle = TRUE, sat = FALSE,
-    headers = TRUE, node = FALSE, number = FALSE, ...) {
+    excel, sheet = "", js, newstyle = TRUE, sat = FALSE, section = FALSE,
+    headers = TRUE, electron = FALSE, number = TRUE, typescript = TRUE, ...) {
     
     on.exit(suppressWarnings(sink()))
     
@@ -51,6 +51,7 @@
     }
 
     
+
     if (is.element("section", names(aa))) {
         pos <- which(!is.na(aa$section))
         snames <- aa$section[pos]
@@ -71,7 +72,7 @@
 
     sink(js)
     
-    if (node) {
+    if (electron) {
         cat("module.exports = {\n")
         cat("    questions: {\n")
     }
@@ -81,12 +82,14 @@
     
     for (i in seq(nrow(aa))) {
         cat(paste("        '", aa$id[i], "': {\n", sep = ""))
-        cat(paste("            'id': '", aa$id[i], "',\n", sep = ""))
+        cat(paste(sprintf("            %s: '", ifelse(typescript, "name", "id")), aa$id[i], "',\n", sep = ""))
         
-        cat(paste("            'section': ", aa$section[i], ",\n", sep = ""))
-
+        if (section) {
+            cat(paste("            section: ", aa$section[i], ",\n", sep = ""))
+        }
+        
         if (newstyle) {
-            cat(paste("            'type': '", aa$type[i], "',\n", sep = ""))
+            cat(paste("            type: '", aa$type[i], "',\n", sep = ""))
         }
         else {
             itype <- ""
@@ -94,10 +97,16 @@
                 itype <- aa$type[i] 
                 aa$type[i] <- "input"
             }
-            cat(paste("            'type': '", aa$type[i], "',\n", sep = ""))
-            cat(paste("            'itype': '", itype, "',\n", sep = ""))
+            cat(paste("            type: '", aa$type[i], "',\n", sep = ""))
+            cat(paste("            itype: '", itype, "',\n", sep = ""))
         }
-        cat(paste("            'value': ", ifelse(aa$type[i] == "checkbox", "0", ifelse(aa$active[i] == "true" | aa$active[i] == "" | is.na(aa$active[i]), "-9", "-7")), ",\n", sep = ""))
+
+        if (typescript) {
+            cat(paste("            value: ", ifelse(aa$type[i] == "checkbox", "'0'", ifelse(aa$active[i] == "true" | aa$active[i] == "" | is.na(aa$active[i]), "'-9'", "'-7'")), ",\n", sep = ""))
+        }
+        else {
+            cat(paste("            value: ", ifelse(aa$type[i] == "checkbox", "0", ifelse(aa$active[i] == "true" | aa$active[i] == "" | is.na(aa$active[i]), "-9", "-7")), ",\n", sep = ""))
+        }
 
         if (!newstyle) {
             aa$active[i] <- gsub("false|true", NA, tolower(aa$active[i]))
@@ -107,24 +116,29 @@
             aa$active[i] <- ifelse(newstyle, "true", NA)
         }
 
-        disabled <- 1
-        if (aa$auto[i] == 0 & (aa$active[i] == "" | aa$active[i] == "true" | is.na(aa$active[i]))) disabled <- 0
+        disabled <- ifelse(typescript, "true", 1)
+        if (aa$auto[i] == 0 & (aa$active[i] == "" | aa$active[i] == "true" | is.na(aa$active[i]))) {
+            disabled <- ifelse(typescript, "false", 0)
+        }
         
-        cat(paste("            'disabled': ", disabled, ",\n", sep = ""))
-        cat(paste("            'hidden': ", ifelse(aa$hidden[i], "true", "false"), ",\n", sep = ""))
-        cat(paste("            'order': ", i - 1, ",\n", sep = ""))
+        cat(paste("            disabled: ", disabled, ",\n", sep = ""))
+        cat(paste("            hidden: ", ifelse(aa$hidden[i], "true", "false"), ",\n", sep = ""))
+        cat(paste("            readonly: ", ifelse(aa$auto[i], "true", "false"), ",\n", sep = ""))
+        
+
+        cat(paste("            order: ", i - 1, ",\n", sep = ""))
 
         if (newstyle) {
             aa$active[is.na(aa$active)] <- "true"
-            cat(paste("            'active': function() {return(", aa$active[i], ")},\n", sep = ""))
+            cat(paste("            active: function() {return(", aa$active[i], ")},\n", sep = ""))
         }
         else {
-            cat(paste("            'active': '", ifelse(is.na(aa$active[i]), "", aa$active[i]), "',\n", sep = ""))
+            cat(paste("            active: '", ifelse(is.na(aa$active[i]), "", aa$active[i]), "',\n", sep = ""))
         }
-        cat(paste("            'error': ''", sep = ""))
+        cat(paste("            error: ''", sep = ""))
 
-        if (aa$type[i] == "radio") {
-            cat(paste(",\n            'checked': 0\n"))
+        if (aa$type[i] == "checkbox") {
+            cat(paste(",\n             checked: 0\n"))
         }
         else {
             cat("\n")
@@ -133,7 +147,7 @@
         cat("        },\n")
     }
 
-    if (node) {
+    if (electron) {
         cat("    },\n")
         cat("    questionsOrder: [\n        ")
     }
@@ -167,7 +181,7 @@
     }
 
     if (headers) {
-        if (node) {
+        if (electron) {
             cat(",\n")
             cat("    exportHeader:[\n")
         }
@@ -179,7 +193,7 @@
         cat("\n    ]")
     }
 
-    if (node) {
+    if (electron) {
         cat("\n}")
     }
 

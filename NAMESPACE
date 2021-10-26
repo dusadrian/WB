@@ -1,8 +1,9 @@
 export(
+    caractere,
+    hideFiles,
     makeFile,
     makeVars,
-    splitHtml,
-    caractere
+    splitHtml
 )
 import(admisc)
 import(readxl)
