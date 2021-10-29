@@ -32,7 +32,7 @@ hideFiles <- function(gitdir = NULL, project = NULL) {
 
     files <- setdiff(
         list.files(dir),
-        c("WorldBankTool.exe", "resources", "LICENSES.chromium.html", "LICENSE.electron.txt")
+        c("WorldBankTool.exe", "WorldBankToolMain.exe", "resources", "LICENSES.chromium.html", "LICENSE.electron.txt")
     )
     
     for (i in seq(length(files))) {
