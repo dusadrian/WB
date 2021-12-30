@@ -34,14 +34,27 @@
         )
     }
 
-    data <- DBI::dbGetQuery(con, 
-        sprintf(
-            "SELECT answer_id, name, value FROM answer_values
-            LEFT JOIN answers ON answers.id = answer_values.answer_id
-            WHERE %s instrument_id = %s",
-            ifelse(partial, "", "partial = 0 AND"), instrument
-        )
-    )
+    sql <- "SELECT answer_id, name, value FROM answer_values
+            LEFT JOIN answers ON answers.id = answer_values.answer_id"
+
+    if (partial | !is.null(instrument)) {
+        sql <- paste(sql, "WHERE")
+
+        if (partial) {
+            sql <- paste (sql, "partial = 0")
+        }
+
+        if (!is.null(instrument)) {
+            if (partial) {
+                sql <- paste(sql, "AND")
+            }
+
+            sql <- paste(sql, "instrument_id =", instrument)
+        }
+    }
+
+    data <- DBI::dbGetQuery(con, sql)
+    cat(sql, "\n")
 
     instruments <- DBI::dbGetQuery(con, "SELECT id, folder FROM instruments")
 
