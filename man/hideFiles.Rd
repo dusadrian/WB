@@ -14,7 +14,7 @@ hideFiles(gitdir = NULL, project = NULL)
 
 \arguments{
   \item{gitdir}{Directorul unde sunt gazduite proiectele}
-  \item{sheet}{Numele directorului / proiectului de interes}
+  \item{project}{Numele directorului / proiectului de interes}
 }
 
 

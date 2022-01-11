@@ -1,6 +1,7 @@
 \name{WB-internal}
 
 \alias{caractere}
+\alias{makeAttributes}
 
 \title{Internal Functions}
 

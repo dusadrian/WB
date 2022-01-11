@@ -1,6 +1,7 @@
 export(
     caractere,
     hideFiles,
+    makeAttributes,
     makeFile,
     makeVars,
     splitHtml

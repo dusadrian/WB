@@ -20,40 +20,41 @@ caractere <- function(x) {
     
     
     imic <- rawToChar(as.raw(packBits(as.integer(c(1,1,0,0,0,0,1,1,0,1,1,1,0,1,0,1)))))
-    imic <- paste(c(imic, "\xee"), collapse = "|")
+    imic <- paste(c(imic, "\xee", "<U\\+00EE>"), collapse = "|")
     
     imare <- rawToChar(as.raw(packBits(as.integer(c(1,1,0,0,0,0,1,1,0,1,1,1,0,0,0,1)))))
-    imare <- paste(c(imare, "\xce"), collapse = "|")
+    imare <- paste(c(imare, "\xce", "<U\\+00CE>"), collapse = "|")
     
     
-    amic <- c("\xe2",
+    amic <- c("\xe2", "<U\\+00E2>",
     rawToChar(as.raw(packBits(as.integer(c(0,0,1,0,0,0,1,1,1,1,0,0,0,0,0,1))))),
     rawToChar(as.raw(packBits(as.integer(c(1,1,0,0,0,0,1,1,0,1,0,0,0,1,0,1))))))
     amic <- paste(amic, collapse = "|")
     
-    amare <- c("\xc2",
+    amare <- c("\xc2", "<U\\+00C2>",
     rawToChar(as.raw(packBits(as.integer(c(0,0,1,0,0,0,1,1,0,1,0,0,0,0,0,1))))),
     rawToChar(as.raw(packBits(as.integer(c(1,1,0,0,0,0,1,1,0,1,0,0,0,0,0,1))))))
     amare <- paste(amare, collapse = "|")
     
-    
-    smic <- paste(c(
+    # U+015F este s turcesc
+    smic <- paste(c("\x219", "<U\\+0219>", "\x15f", "<U\\+015F>",
     rawToChar(as.raw(packBits(as.integer(c(0,0,0,1,0,0,1,1,1,0,0,1,1,0,0,1))))),
     rawToChar(as.raw(packBits(as.integer(c(1,0,1,0,0,0,1,1,1,1,1,1,1,0,0,1)))))),
     collapse = "|")
     
-    smare <- paste(c(
+    # U+015E este S turcesc
+    smare <- paste(c("\x218", "<U\\+0218>", "\x15e", "<U\\+015E>",
     rawToChar(as.raw(packBits(as.integer(c(0,0,0,1,0,0,1,1,0,0,0,1,1,0,0,1))))),
     rawToChar(as.raw(packBits(as.integer(c(1,0,1,0,0,0,1,1,0,1,1,1,1,0,0,1)))))),
     collapse = "|")
     
     
-    tmic <- paste(c(
+    tmic <- paste(c("\x21b", "<U\\+021B>",
     rawToChar(as.raw(packBits(as.integer(c(0,0,0,1,0,0,1,1,1,1,0,1,1,0,0,1))))),
     rawToChar(as.raw(packBits(as.integer(c(1,0,1,0,0,0,1,1,1,1,0,0,0,1,0,1)))))),
     collapse = "|")
     
-    tmare <- paste(c(
+    tmare <- paste(c("\x21a", "<U\\+021A>",
     rawToChar(as.raw(packBits(as.integer(c(0,0,0,1,0,0,1,1,0,1,0,1,1,0,0,1))))),
     rawToChar(as.raw(packBits(as.integer(c(1,0,1,0,0,0,1,1,0,1,0,0,0,1,0,1)))))),
     collapse = "|")
@@ -72,6 +73,6 @@ caractere <- function(x) {
     x <- gsub(tmare, "T", x)
     x <- gsub(apostrof, "'", x)
     
-    return(x)
+    return(enc2utf8(x))
     
 }
