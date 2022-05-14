@@ -47,10 +47,19 @@ hideFiles <- function(gitdir = NULL, project = NULL) {
         system(paste("attrib +h", file.path(dir, files[i])))
     }
 
-    system(paste("attrib +h", file.path(dir, "resources", "assets")))
+    if (file.exists(file.path(dir, "resources", "assets"))) {
+        system(paste("attrib +h", file.path(dir, "resources", "assets")))
+    }
+
     system(paste("attrib +h", file.path(dir, "resources", "app.asar")))
+    
     if (file.exists(file.path(dir, "resources", "page"))) {
         system(paste("attrib +h", file.path(dir, "resources", "page")))
+    }
+    
+    if (file.exists(file.path(dir, "resources", "R_Portable"))) {
+        system(paste("attrib +h", file.path(dir, "resources", "R_Portable")))
+        system(paste("attrib +h", file.path(dir, "resources", "startServer.R")))
     }
 
     if (win32) {
