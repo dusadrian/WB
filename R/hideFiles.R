@@ -35,7 +35,7 @@ hideFiles <- function(gitdir = NULL, project = NULL) {
         c(
             "WorldBankTool.exe",
             "WorldBankToolMain.exe",
-            "StatConverter.exe"
+            "StatConverter.exe",
             "resources",
             "LICENSES.chromium.html",
             "LICENSE.electron.txt"
