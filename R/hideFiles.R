@@ -31,13 +31,10 @@ hideFiles <- function(gitdir = NULL, project = NULL) {
     )
 
     filst <- list.files(dir)
-    tokeep <- c("WorldBankTool.exe", "WorldBankToolMain.exe", "LICENSES.chromium.html", "LICENSE.electron.txt")
+    tokeep <- c("WorldBankTool.exe", "WorldBankToolMain.exe", "LICENSES.chromium.html", "resources", "LICENSE.electron.txt")
 
     if (project == "StatConverter") {
-        tokeep <- c(tokeep, "locales", filst[grepl("StatConverter", filst) & grepl("exe", filst)])
-    }
-    else {
-        tokeep <- c(tokeep, "resources")
+        tokeep <- c(tokeep, filst[grepl("StatConverter", filst) & grepl("exe", filst)])
     }
     
     files <- setdiff(filst, tokeep)
@@ -51,7 +48,9 @@ hideFiles <- function(gitdir = NULL, project = NULL) {
         system(paste("attrib +h", file.path(dir, "resources", "assets")))
     }
 
-    system(paste("attrib +h", file.path(dir, "resources", "app.asar")))
+    if (project != "StatConverter") {
+        system(paste("attrib +h", file.path(dir, "resources", "app.asar")))
+    }
     
     if (file.exists(file.path(dir, "resources", "page"))) {
         system(paste("attrib +h", file.path(dir, "resources", "page")))
@@ -60,6 +59,7 @@ hideFiles <- function(gitdir = NULL, project = NULL) {
     if (file.exists(file.path(dir, "resources", "R_Portable"))) {
         system(paste("attrib +h", file.path(dir, "resources", "R_Portable")))
         system(paste("attrib +h", file.path(dir, "resources", "startServer.R")))
+        system(paste("attrib +h", file.path(dir, "resources", "elevate.exe")))
     }
 
     if (win32) {
