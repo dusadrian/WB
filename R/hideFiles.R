@@ -29,15 +29,18 @@ hideFiles <- function(gitdir = NULL, project = NULL) {
     dir <- file.path(
         gitdir, project, "build", "output", "win-unpacked"
     )
-
-    filst <- list.files(dir)
-    tokeep <- c("WorldBankTool.exe", "WorldBankToolMain.exe", "LICENSES.chromium.html", "resources", "LICENSE.electron.txt")
-
-    if (project == "StatConverter") {
-        tokeep <- c(tokeep, filst[grepl("StatConverter", filst) & grepl("exe", filst)])
-    }
     
-    files <- setdiff(filst, tokeep)
+    files <- setdiff(
+        list.files(dir),
+        c(
+            "WorldBankTool.exe",
+            "WorldBankToolMain.exe",
+            "StatConverter.exe"
+            "resources",
+            "LICENSES.chromium.html",
+            "LICENSE.electron.txt"
+        )
+    )
 
     
     for (i in seq(length(files))) {
