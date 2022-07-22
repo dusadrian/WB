@@ -4,13 +4,16 @@ export(
     makeAttributes,
     makeFile,
     makeVars,
+    pocufiles,
     splitHtml
 )
 import(admisc)
 import(readxl)
+import(XLConnect)
 importFrom("stats", "na.omit")
+importFrom("tools", "file_ext")
 importFrom("DBI", "dbConnect", "dbDisconnect", "dbGetQuery")
 importFrom("haven", "tagged_na", "write_sav", "write_dta")
 importFrom("RMariaDB", "MariaDB")
-importFrom("utils", "packageDescription", "write.csv")
+importFrom("utils", "packageDescription", "write.csv", "read.csv")
 # S3method(descarca, default)

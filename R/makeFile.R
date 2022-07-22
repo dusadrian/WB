@@ -24,6 +24,11 @@
             dbname = dbname,
             user = user,
             password = password
+
+            # host = '127.0.0.1',
+            # dbname = 'c1_fir_db',
+            # user = 'c1_fir',
+            # password = '_A79qxeYzMQCy'
         )
     }
     else {
