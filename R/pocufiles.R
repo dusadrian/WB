@@ -34,12 +34,6 @@ pocufiles <- function(datacsv, sheet = NULL, template = "", dirname = "") {
         pocu[[dd]] <- as.Date(x)
     }
 
-    # pocu$C16 <- as.Date(format(pocu$C16, format = "%Y-%m-%d"))
-    # pocu$C17 <- as.Date(format(pocu$C17, format = "%Y-%m-%d"))
-    # pocu$C40 <- as.Date(format(pocu$C40, format = "%Y-%m-%d"))
-    # pocu$D128 <- as.Date(format(pocu$D128, format = "%Y-%m-%d"))
-    # pocu$C140 <- as.Date(format(pocu$C140, format = "%Y-%m-%d"))
-
 
     if (!dir.exists(dirname)) {
         dir.create(dirname)
@@ -52,7 +46,8 @@ pocufiles <- function(datacsv, sheet = NULL, template = "", dirname = "") {
 
     options(java.parameters = "-Xmx4g")
 
-    for (i in seq(nrow(pocu))) { # seq(nrow(pocu))
+    for (i in seq(nrow(pocu))) {
+        
         filename <- file.path(dirname, "formulare_validate", paste(pocu$ID[i], tools::file_ext(template), sep = "."))
         file.copy(template, filename)
 
@@ -80,7 +75,7 @@ pocufiles <- function(datacsv, sheet = NULL, template = "", dirname = "") {
             "C512", "C516"
         )
 
-        e31x <- TRUE
+        e31x <- !is.na(pocu$E31[i])
 
         for (j in seq(2, ncol(pocu))) {
             if (is.na(pocu[i, j]) || !identical(pocu[i, j], "")) {
@@ -88,9 +83,6 @@ pocufiles <- function(datacsv, sheet = NULL, template = "", dirname = "") {
                 col <- match(substring(nmj, 1, 1), LETTERS)
                 row <- as.numeric(substring(nmj, 2))
                 valid <- TRUE
-                if (nmj == "E31") {
-                    e31x <- pocu[i, nmj] == "X"
-                }
 
                 if (e31x) {
                     valid <- !is.element(nmj, c("C32", "C33", "C34"))
