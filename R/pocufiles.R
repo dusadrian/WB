@@ -27,7 +27,11 @@ pocufiles <- function(datacsv, sheet = NULL, template = "", dirname = "") {
 
     
     for (dd in c("C16", "C17", "C40", "D128", "C140")) {
-        pocu[, dd] <- as.Date(format(pocu[, dd], format = "%Y-%m-%d"))
+        x <- format(pocu[[dd]], format = "%Y-%m-%d")
+        if (any(grepl("\\.", x))) {
+            x <- unlist(lapply(strsplit(x, split = "\\."), function(x) paste(rev(x), collapse = "-")))
+        }
+        pocu[[dd]] <- as.Date(x)
     }
 
     # pocu$C16 <- as.Date(format(pocu$C16, format = "%Y-%m-%d"))
