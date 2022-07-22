@@ -26,7 +26,7 @@ pocufiles <- function(datacsv, sheet = NULL, template = "", dirname = "") {
     pocu$C33 <- caractere(pocu$C33, c(smare = smare, tmare = tmare))
 
     
-    for (dd in c("C16", "C17", "C40", "D128", "C140")) {
+    for (dd in c("C40", "D128", "C140")) {
         x <- format(pocu[[dd]], format = "%Y-%m-%d")
         if (any(grepl("\\.", x))) {
             x <- unlist(lapply(strsplit(x, split = "\\."), function(x) paste(rev(x), collapse = "-")))
@@ -52,7 +52,7 @@ pocufiles <- function(datacsv, sheet = NULL, template = "", dirname = "") {
 
     options(java.parameters = "-Xmx4g")
 
-    for (i in 1:10) { # seq(nrow(pocu))
+    for (i in seq(nrow(pocu))) { # seq(nrow(pocu))
         filename <- file.path(dirname, "formulare_validate", paste(pocu$ID[i], tools::file_ext(template), sep = "."))
         file.copy(template, filename)
 
