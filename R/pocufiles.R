@@ -26,11 +26,15 @@ pocufiles <- function(datacsv, sheet = NULL, template = "", dirname = "") {
     pocu$C33 <- caractere(pocu$C33, c(smare = smare, tmare = tmare))
 
     
-    pocu$C16 <- format(pocu$C16, format = "%d.%m.%Y")
-    pocu$C17 <- format(pocu$C17, format = "%d.%m.%Y")
-    pocu$C40 <- format(pocu$C40, format = "%d.%m.%Y")
-    pocu$D128 <- format(pocu$D128, format = "%d.%m.%Y")
-    pocu$C140 <- format(pocu$C140, format = "%d.%m.%Y")
+    for (dd in c("C16", "C17", "C40", "D128", "C140")) {
+        pocu[, dd] <- as.Date(format(pocu[, dd], format = "%Y-%m-%d"))
+    }
+
+    # pocu$C16 <- as.Date(format(pocu$C16, format = "%Y-%m-%d"))
+    # pocu$C17 <- as.Date(format(pocu$C17, format = "%Y-%m-%d"))
+    # pocu$C40 <- as.Date(format(pocu$C40, format = "%Y-%m-%d"))
+    # pocu$D128 <- as.Date(format(pocu$D128, format = "%Y-%m-%d"))
+    # pocu$C140 <- as.Date(format(pocu$C140, format = "%Y-%m-%d"))
 
 
     if (!dir.exists(dirname)) {
