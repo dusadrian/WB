@@ -33,13 +33,13 @@ caractere <- function(x, replace = c()) {
     
     
     amic <- c("\xe2", "<U\\+00E2>",
-    rawToChar(as.raw(packBits(as.integer(c(0,0,1,0,0,0,1,1,1,1,0,0,0,0,0,1))))),
-    rawToChar(as.raw(packBits(as.integer(c(1,1,0,0,0,0,1,1,0,1,0,0,0,1,0,1))))))
+    rawToChar(as.raw(packBits(as.integer(c(0,0,1,0,0,0,1,1,1,1,0,0,0,0,0,1)))))
+    )
     toreplace$amic <- paste(amic, collapse = "|")
     
     amare <- c("\xc2", "<U\\+00C2>",
-    rawToChar(as.raw(packBits(as.integer(c(0,0,1,0,0,0,1,1,0,1,0,0,0,0,0,1))))),
-    rawToChar(as.raw(packBits(as.integer(c(1,1,0,0,0,0,1,1,0,1,0,0,0,0,0,1))))))
+    rawToChar(as.raw(packBits(as.integer(c(0,0,1,0,0,0,1,1,0,1,0,0,0,0,0,1)))))
+    )
     toreplace$amare <- paste(amare, collapse = "|")
     
     # U+015F este s turcesc
@@ -66,8 +66,8 @@ caractere <- function(x, replace = c()) {
     collapse = "|")
 
 
-    toreplace$idinamic <- rawToChar(as.raw(as.integer(c(195, 162))))
-    toreplace$idinamare <- rawToChar(as.raw(as.integer(c(195, 130))))
+    toreplace$idinamic <- rawToChar(as.raw(packBits(as.integer(c(1,1,0,0,0,0,1,1,0,1,0,0,0,1,0,1)))))
+    toreplace$idinamare <- rawToChar(as.raw(packBits(as.integer(c(1,1,0,0,0,0,1,1,0,1,0,0,0,0,0,1)))))
 
     if (length(replace) == 0) {
         replace <- c(
