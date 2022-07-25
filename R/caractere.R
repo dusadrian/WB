@@ -66,6 +66,9 @@ caractere <- function(x, replace = c()) {
     collapse = "|")
 
 
+    toreplace$idinamic <- rawToChar(as.raw(as.integer(c(195, 162))))
+    toreplace$idinamare <- rawToChar(as.raw(as.integer(c(195, 130))))
+
     if (length(replace) == 0) {
         replace <- c(
             tab = " ",
@@ -76,6 +79,8 @@ caractere <- function(x, replace = c()) {
             imare = "I",
             amic = "a",
             amare = "A",
+            idinamic = "a",
+            idinamare = "A",
             smic = "s",
             smare = "S",
             tmic = "t",
