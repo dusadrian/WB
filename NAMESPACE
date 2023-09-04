@@ -1,9 +1,9 @@
 export(
-    caractere,
     hideFiles,
     makeAttributes,
-    makeFile,
+    # makeFile,
     makeVars,
+    makeSQL,
     splitHtml
 )
 import(admisc)
@@ -13,5 +13,6 @@ importFrom("tools", "file_ext")
 importFrom("DBI", "dbConnect", "dbDisconnect", "dbGetQuery")
 importFrom("haven", "tagged_na", "write_sav", "write_dta")
 importFrom("RMariaDB", "MariaDB")
+importFrom("stringi", "stri_trans_general")
 importFrom("utils", "packageDescription", "write.csv", "read.csv")
 # S3method(descarca, default)
