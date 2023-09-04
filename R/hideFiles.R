@@ -1,4 +1,4 @@
-hideFiles <- function(gitdir = NULL, project = NULL) {
+hideFiles <- function(project = NULL, gitdir = NULL) {
 
     if (Sys.info()[["sysname"]] != "Windows") {
         stop("Numai pentru Windows...")
@@ -9,7 +9,7 @@ hideFiles <- function(gitdir = NULL, project = NULL) {
     }
 
     if (is.null(gitdir)) {
-        gitdir <- "C:/Users/adrian/Documents/GitHub"
+        gitdir <- "C:/Users/dusadrian/Documents/GitHub"
     }
 
     if (!file.exists(file.path(gitdir, project, "build"))) {
