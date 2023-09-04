@@ -98,8 +98,16 @@
 
     mdata$adr1 <- judete$name[match(chestionare$county_id, judete$id)]
 
+    
+    
+
     if (toupper(type) == "SPSS" & !diacritice) {
-        mdata[] <- lapply(mdata, caractere)
+        mdata[] <- lapply(mdata, function(x) {
+            stringi::stri_trans_general(
+                x,
+                id = "latin-ascii"
+            )
+        })
     }
 
     mdata[] <- lapply(mdata, function(x) {
@@ -109,6 +117,13 @@
                 x <- as.integer(x)
             }
         }
+        else {
+            x <- stringi::stri_trans_general(
+                x,
+                id = "NFKD; NFC; [^\\p{L}] latin-ascii"
+            )
+        }
+
         return(x)
     })
 

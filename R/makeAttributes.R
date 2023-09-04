@@ -55,12 +55,18 @@
     if (toupper(type) == "SPSS") {
         label <- cb[["label"]]
         if (!is.null(label) & !diacritice) {
-            label <- caractere(label)
+            label <- stringi::stri_trans_general(
+                label,
+                id = "latin-ascii"
+            )
         }
         
 
         if (!is.null(labels) & !diacritice) {
-            names(labels) <- caractere(lnms)
+            names(labels) <- stringi::stri_trans_general(
+                lnms,
+                id = "latin-ascii"
+            )
         }
 
         x <- haven::labelled_spss(x, label = label, labels = labels, na_values = na_values)
