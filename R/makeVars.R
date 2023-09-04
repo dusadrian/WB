@@ -77,19 +77,24 @@
         cat("    questions: {\n")
     }
     else {
-        cat("var questions = {\n")
+        if (typescript) {
+            cat("export const questions = {\n")
+        }
+        else{
+            cat("const questions = {\n")
+        }
     }
     
     for (i in seq(nrow(aa))) {
-        cat(paste("        '", aa$id[i], "': {\n", sep = ""))
-        cat(paste(sprintf("            %s: '", ifelse(typescript, "name", "id")), aa$id[i], "',\n", sep = ""))
+        cat(paste("    '", aa$id[i], "': {\n", sep = ""))
+        cat(paste(sprintf("        %s: '", ifelse(typescript, "name", "id")), aa$id[i], "',\n", sep = ""))
         
         if (section) {
-            cat(paste("            section: ", aa$section[i], ",\n", sep = ""))
+            cat(paste("        section: ", aa$section[i], ",\n", sep = ""))
         }
         
         if (newstyle) {
-            cat(paste("            type: '", aa$type[i], "',\n", sep = ""))
+            cat(paste("        type: '", aa$type[i], "',\n", sep = ""))
         }
         else {
             itype <- ""
@@ -97,15 +102,15 @@
                 itype <- aa$type[i] 
                 aa$type[i] <- "input"
             }
-            cat(paste("            type: '", aa$type[i], "',\n", sep = ""))
-            cat(paste("            itype: '", itype, "',\n", sep = ""))
+            cat(paste("        type: '", aa$type[i], "',\n", sep = ""))
+            cat(paste("        itype: '", itype, "',\n", sep = ""))
         }
 
         if (typescript) {
-            cat(paste("            value: ", ifelse(aa$type[i] == "checkbox", "'0'", ifelse(aa$active[i] == "true" | aa$active[i] == "" | is.na(aa$active[i]), "'-9'", "'-7'")), ",\n", sep = ""))
+            cat(paste("        value: ", ifelse(aa$type[i] == "checkbox", "'0'", ifelse(aa$active[i] == "true" | aa$active[i] == "" | is.na(aa$active[i]), "'-9'", "'-7'")), ",\n", sep = ""))
         }
         else {
-            cat(paste("            value: ", ifelse(aa$type[i] == "checkbox", "0", ifelse(aa$active[i] == "true" | aa$active[i] == "" | is.na(aa$active[i]), "-9", "-7")), ",\n", sep = ""))
+            cat(paste("        value: ", ifelse(aa$type[i] == "checkbox", "0", ifelse(aa$active[i] == "true" | aa$active[i] == "" | is.na(aa$active[i]), "-9", "-7")), ",\n", sep = ""))
         }
 
         if (!newstyle) {
@@ -121,39 +126,47 @@
             disabled <- ifelse(typescript, "false", 0)
         }
         
-        cat(paste("            disabled: ", disabled, ",\n", sep = ""))
-        cat(paste("            hidden: ", ifelse(aa$hidden[i], "true", "false"), ",\n", sep = ""))
-        cat(paste("            readonly: ", ifelse(aa$auto[i], "true", "false"), ",\n", sep = ""))
+        cat(paste("        disabled: ", disabled, ",\n", sep = ""))
+        cat(paste("        hidden: ", ifelse(aa$hidden[i], "true", "false"), ",\n", sep = ""))
+        cat(paste("        readonly: ", ifelse(aa$auto[i], "true", "false"), ",\n", sep = ""))
         
 
-        cat(paste("            order: ", i - 1, ",\n", sep = ""))
+        cat(paste("        order: ", i - 1, ",\n", sep = ""))
 
         if (newstyle) {
             aa$active[is.na(aa$active)] <- "true"
-            cat(paste("            active: function() {return(", aa$active[i], ")},\n", sep = ""))
+            cat(paste("        active: function() {return(", aa$active[i], ")},\n", sep = ""))
         }
         else {
-            cat(paste("            active: '", ifelse(is.na(aa$active[i]), "", aa$active[i]), "',\n", sep = ""))
+            cat(paste("        active: '", ifelse(is.na(aa$active[i]), "", aa$active[i]), "',\n", sep = ""))
         }
-        cat(paste("            error: ''", sep = ""))
+
+        cat(paste("        error: '',\n", sep = ""))
+
+        cat(paste("        skip: false", sep = ""))
 
         if (aa$type[i] == "checkbox") {
-            cat(paste(",\n             checked: 0\n"))
+            cat(paste(",\n         checked: 0\n"))
         }
         else {
             cat("\n")
         }
 
-        cat("        },\n")
+        cat("    },\n")
     }
 
     if (electron) {
         cat("    },\n")
-        cat("    questionsOrder: [\n        ")
+        cat("    questionsOrder: [\n    ")
     }
     else {
-        cat("    };\n\n")
-        cat("var questionsOrder = [\n        ")
+        cat("};\n\n")
+        if (typescript) {
+            cat("export const questionsOrder = [\n    ")
+        }
+        else {
+            cat("const questionsOrder = [\n    ")
+        }
     }
 
     order <- seq(nrow(aa))
@@ -166,9 +179,9 @@
         order <- aa$order
     }
 
-    cat(paste(strwrap(paste("'", aa$id, "'", sep = "", collapse = ", "), width = 110), collapse = "\n        "))
+    cat(paste(strwrap(paste("'", aa$id, "'", sep = "", collapse = ", "), width = 110), collapse = "\n    "))
 
-    cat("\n    ]")
+    cat("\n]")
 
     if (sat) {
         cat(",\n")
@@ -187,10 +200,16 @@
         }
         else {
             cat(";\n\n")
-            cat("var exportHeader = [\n")
+            if (typescript) {
+                cat("export const exportHeader = [\n")
+            }
+            else {
+                cat("const exportHeader = [\n")
+            }
+            cat("const exportHeader = [\n")
         }
-        cat(paste("        {'id': '", aa$id, "', 'title': '", toupper(aa$id), "'},", sep = "", collapse = "\n"))
-        cat("\n    ]")
+        cat(paste("    {'id': '", aa$id, "', 'title': '", toupper(aa$id), "'},", sep = "", collapse = "\n"))
+        cat("\n]")
     }
 
     if (electron) {
