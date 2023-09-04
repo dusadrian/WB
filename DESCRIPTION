@@ -5,6 +5,6 @@ Title: World Bank
 Authors@R: c(person("Adrian", "Dusa", role = c("aut", "cre"),
                     email = "dusa.adrian@gmail.com"))
 Depends: R (>= 3.5.0)
-Imports: readxl, admisc, DBI, RMariaDB, haven, tools
+Imports: readxl, admisc, DBI, RMariaDB, haven, tools, stringi
 Description: Functii utile pentru proiectele WB
 License: GPL (>= 2)
