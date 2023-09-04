@@ -9,12 +9,12 @@ Ascunde fisiere si directoare din build
 }
 
 \usage{
-hideFiles(gitdir = NULL, project = NULL)
+hideFiles(project = NULL, gitdir = NULL)
 }
 
 \arguments{
-  \item{gitdir}{Directorul unde sunt gazduite proiectele}
   \item{project}{Numele directorului / proiectului de interes}
+  \item{gitdir}{Directorul unde sunt gazduite proiectele}
 }
 
 
