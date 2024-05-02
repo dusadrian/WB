@@ -19,9 +19,12 @@
     aa$hidden[is.na(aa$hidden)] <- 0
     aa$hidden[aa$hidden != 0] <- 1
 
+    aa$active[aa$active == "" | is.na(aa$active)] <- "true"
+
 
     bb <- paste("Number(instrument.questions.", aa$id, ".value)", sep = "")
     for (i in seq(nrow(aa))) {
+
         # if (aa$active[i] == "" | is.na(aa$active[i]) | aa$auto[i] == 1) {
         #     aa$active[i] <- "true"
         # }
