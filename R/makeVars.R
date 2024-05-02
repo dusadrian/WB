@@ -26,7 +26,7 @@
         #     aa$active[i] <- "true"
         # }
         # else {
-        if (aa$active != "true") {
+        if (aa$active[i] != "true") {
             aa$active[i] <- gsub("\\&", "&&", aa$active[i])
             aa$active[i] <- gsub("\\&\\&\\&\\&", "&&", aa$active[i])
             aa$active[i] <- gsub("\\|", "||", aa$active[i])
