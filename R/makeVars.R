@@ -55,7 +55,7 @@
     sink(js)
 
     cat("import instrument from '../../libraries/instrument';\n")
-    cat("import { QuestionObjectType } from '../../libraries/in terfaces';\n")
+    cat("import { QuestionObjectType } from '../../libraries/interfaces';\n")
 
     cat("\n\n")
     cat("export const questions: QuestionObjectType = {\n")
