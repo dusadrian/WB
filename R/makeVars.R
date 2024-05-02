@@ -26,6 +26,7 @@
         #     aa$active[i] <- "true"
         # }
         # else {
+        if (aa$active != "true") {
             aa$active[i] <- gsub("\\&", "&&", aa$active[i])
             aa$active[i] <- gsub("\\&\\&\\&\\&", "&&", aa$active[i])
             aa$active[i] <- gsub("\\|", "||", aa$active[i])
@@ -36,7 +37,7 @@
             aa$active[i] <- gsub(">==", ">=", aa$active[i])
             aa$active[i] <- gsub("<==", "<=", aa$active[i])
             aa$active[i] <- admisc::replaceText(aa$active[i], aa$id, bb)
-        # }
+        }
     }
 
 
