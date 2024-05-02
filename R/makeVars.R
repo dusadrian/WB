@@ -22,10 +22,10 @@
 
     bb <- paste("Number(instrument.questions.", aa$id, ".value)", sep = "")
     for (i in seq(nrow(aa))) {
-        if (aa$active[i] == "" | is.na(aa$active[i]) | aa$auto[i] == 1) {
-            aa$active[i] <- "true"
-        }
-        else {
+        # if (aa$active[i] == "" | is.na(aa$active[i]) | aa$auto[i] == 1) {
+        #     aa$active[i] <- "true"
+        # }
+        # else {
             aa$active[i] <- gsub("\\&", "&&", aa$active[i])
             aa$active[i] <- gsub("\\&\\&\\&\\&", "&&", aa$active[i])
             aa$active[i] <- gsub("\\|", "||", aa$active[i])
@@ -36,7 +36,7 @@
             aa$active[i] <- gsub(">==", ">=", aa$active[i])
             aa$active[i] <- gsub("<==", "<=", aa$active[i])
             aa$active[i] <- admisc::replaceText(aa$active[i], aa$id, bb)
-        }
+        # }
     }
 
 
@@ -66,9 +66,7 @@
         cat(paste(
             "        disabled: ",
             ifelse(
-                aa$auto[i] == 0 & aa$active[i] == "true",
-                "false",
-                "true"
+                aa$active[i] != "true", "true", "false"
             ),
             ",\n",
             sep = ""
