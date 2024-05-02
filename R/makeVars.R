@@ -19,6 +19,14 @@
     aa$hidden[is.na(aa$hidden)] <- 0
     aa$hidden[aa$hidden != 0] <- 1
 
+    if (!is.element("skip", colnames(aa))) {
+        aa$skip <- "false"
+    } else {
+        aa$skip[is.na(aa$skip)] <- "false"
+        aa$skip[aa$skip == "0"] <- "false"
+        aa$skip[aa$skip != "false"] <- "true"
+    }
+
     aa$active[aa$active == "" | is.na(aa$active)] <- "true"
 
 
@@ -90,10 +98,9 @@
             sep = ""
         ))
 
-
         cat(paste("        order: ", i - 1, ",\n", sep = ""))
         cat(paste("        active: function() {return(", aa$active[i], ")},\n", sep = ""))
-        cat(paste("        skip: false", sep = ""))
+        cat(paste("        skip: ", aa$skip[i], sep = ""))
 
         if (aa$type[i] == "checkbox") {
             cat(",\n         checked: 0")
@@ -104,7 +111,7 @@
 
     cat("};\n\n")
 
-    cat("export const questionsOrder: Array<string> = [\n    ")
+    cat("export const questionOrder: Array<string> = [\n    ")
 
     order <- seq(nrow(aa))
 
