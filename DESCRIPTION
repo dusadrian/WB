@@ -6,5 +6,6 @@ Authors@R: c(person("Adrian", "Dusa", role = c("aut", "cre"),
                     email = "dusa.adrian@gmail.com"))
 Depends: R (>= 3.5.0)
 Imports: readxl, admisc, DBI, RMariaDB, haven, tools, stringi
-Description: Functii utile pentru proiectele WB
+Description: Functii utile pentru proiectele WB, inclusiv citirea datelor din baze de date.
+    Am mai pus aici si cateva functii pentru a exporta in format Excel, SPSS si Stata.
 License: GPL (>= 2)

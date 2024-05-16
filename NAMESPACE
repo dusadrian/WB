@@ -1,10 +1,10 @@
 export(
-    hideFiles,
-    makeAttributes,
+    # makeAttributes,
     # makeFile,
-    makeVars,
-    makeSQL,
-    splitHtml
+    # makeSQL,
+    # splitHtml,
+    hideFiles,
+    makeVars
 )
 import(admisc)
 import(readxl)

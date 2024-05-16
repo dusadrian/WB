@@ -10,7 +10,7 @@
         sheet <- 1
     }
 
-    aa <- readxl::read_excel(excel, sheet = sheet)
+    aa <- suppressMessages(readxl::read_excel(excel, sheet = sheet))
     aa$id <- admisc::trimstr(aa$id)
     aa$id <- tolower(aa$id)
     aa$active <- admisc::trimstr(tolower(aa$active))

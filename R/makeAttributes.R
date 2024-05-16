@@ -1,91 +1,91 @@
-`makeAttributes` <- function(x, cb, diacritice, type) {
-    
-    labels <- cb[["labels"]]
-    if (is.null(labels)) {
-        labels <- cb[["values"]]
-    }
+# `makeAttributes` <- function(x, cb, diacritice, type) {
 
-    if (any(is.element(x, -7)) && all(!is.element(labels, -7))) {
-        labels <- c(labels, c("Nu se aplică" = -7))
-    }
-    
-    na_values <- cb[["na_values"]]
+#     labels <- cb[["labels"]]
+#     if (is.null(labels)) {
+#         labels <- cb[["values"]]
+#     }
 
-    if (!is.null(cb$type) && is.element(cb$type, c("input", "textarea"))) {
-        x <- as.character(x)
-    }
-    
-    if (admisc::possibleNumeric(x)) {
-        if (!is.numeric(x)) {
-            x <- admisc::asNumeric(x)
-        }
+#     if (any(is.element(x, -7)) && all(!is.element(labels, -7))) {
+#         labels <- c(labels, c("Nu se aplică" = -7))
+#     }
 
-        if (!is.integer(x) && all(na.omit(x) < 2^31 - 1)) {
-            if (admisc::wholeNumeric(x)) {
-                x <- as.integer(x)
-            }
-        }
+#     na_values <- cb[["na_values"]]
 
-        notna <- which(!is.na(x))
-        if (toupper(type) == "STATA" && any(x[notna] < 0)) {
-            x[notna][x[notna] == -1] <- haven::tagged_na('a')
-            x[notna][x[notna] == -7] <- haven::tagged_na('b')
-            x[notna][x[notna] == -9] <- haven::tagged_na('c')
-        }
-    }
+#     if (!is.null(cb$type) && is.element(cb$type, c("input", "textarea"))) {
+#         x <- as.character(x)
+#     }
 
-    if (is.character(x)) {
+#     if (admisc::possibleNumeric(x)) {
+#         if (!is.numeric(x)) {
+#             x <- admisc::asNumeric(x)
+#         }
 
-        if (!is.null(labels)) {
-            lnms <- names(labels)
-            labels <- as.character(labels)
-        }
+#         if (!is.integer(x) && all(na.omit(x) < 2^31 - 1)) {
+#             if (admisc::wholeNumeric(x)) {
+#                 x <- as.integer(x)
+#             }
+#         }
 
-        if (!is.null(na_values)) {
-            na_values <- as.character(na_values)
-        }
-    }
-    else {
-        if (!is.null(labels)) {
-            lnms <- names(labels)
-            labels <- as.integer(labels)
-        }
-    }
-    
-    if (toupper(type) == "SPSS") {
-        label <- cb[["label"]]
-        if (!is.null(label) & !diacritice) {
-            label <- stringi::stri_trans_general(
-                label,
-                id = "latin-ascii"
-            )
-        }
-        
+#         notna <- which(!is.na(x))
+#         if (toupper(type) == "STATA" && any(x[notna] < 0)) {
+#             x[notna][x[notna] == -1] <- haven::tagged_na('a')
+#             x[notna][x[notna] == -7] <- haven::tagged_na('b')
+#             x[notna][x[notna] == -9] <- haven::tagged_na('c')
+#         }
+#     }
 
-        if (!is.null(labels) & !diacritice) {
-            names(labels) <- stringi::stri_trans_general(
-                lnms,
-                id = "latin-ascii"
-            )
-        }
+#     if (is.character(x)) {
 
-        x <- haven::labelled_spss(x, label = label, labels = labels, na_values = na_values)
-    }
-    else if (toupper(type) == "STATA") {
-        
-        if (is.numeric(x)) {
-            if (!is.null(labels)) {
-                labels[labels == -1] <- haven::tagged_na('a')
-                labels[labels == -7] <- haven::tagged_na('b')
-                labels[labels == -9] <- haven::tagged_na('c')
-                names(labels) <- lnms
+#         if (!is.null(labels)) {
+#             lnms <- names(labels)
+#             labels <- as.character(labels)
+#         }
 
-                x <- haven::labelled(x, label = cb[["label"]], labels = labels)
-            }
-        }
-        
-        attr(x, "label") <- cb[["label"]]
-    }
+#         if (!is.null(na_values)) {
+#             na_values <- as.character(na_values)
+#         }
+#     }
+#     else {
+#         if (!is.null(labels)) {
+#             lnms <- names(labels)
+#             labels <- as.integer(labels)
+#         }
+#     }
 
-    return(x)
-}
+#     if (toupper(type) == "SPSS") {
+#         label <- cb[["label"]]
+#         if (!is.null(label) & !diacritice) {
+#             label <- stringi::stri_trans_general(
+#                 label,
+#                 id = "latin-ascii"
+#             )
+#         }
+
+
+#         if (!is.null(labels) & !diacritice) {
+#             names(labels) <- stringi::stri_trans_general(
+#                 lnms,
+#                 id = "latin-ascii"
+#             )
+#         }
+
+#         x <- haven::labelled_spss(x, label = label, labels = labels, na_values = na_values)
+#     }
+#     else if (toupper(type) == "STATA") {
+
+#         if (is.numeric(x)) {
+#             if (!is.null(labels)) {
+#                 labels[labels == -1] <- haven::tagged_na('a')
+#                 labels[labels == -7] <- haven::tagged_na('b')
+#                 labels[labels == -9] <- haven::tagged_na('c')
+#                 names(labels) <- lnms
+
+#                 x <- haven::labelled(x, label = cb[["label"]], labels = labels)
+#             }
+#         }
+
+#         attr(x, "label") <- cb[["label"]]
+#     }
+
+#     return(x)
+# }

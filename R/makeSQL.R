@@ -3,9 +3,7 @@
 
 
 `makeSQL` <- function(excel, sheet = 1, tabela = NULL, dir = NULL) {
-    
-    dots <- list(...)
-    
+
     if (is.null(tabela)) {
         admisc::stopError("Lipseste numele tabelei SQL.")
     }
@@ -21,11 +19,11 @@
     }
 
     on.exit(suppressWarnings(sink()))
-    
+
     if (identical(sheet, "")) {
         sheet <- 1
     }
-    
+
     aa <- readxl::read_excel(excel, sheet = sheet)
     aa <- aa[, c("id", "type")]
     aa$id <- admisc::trimstr(aa$id)
@@ -34,7 +32,7 @@
     extra <- sapply(aa$id, function(x) {
         paste(rep(" ", maxlen - nchar(x)), collapse = "")
     })
-    
+
 
     comanda <- c(
         paste("CREATE TABLE", tabela, "("),
@@ -42,7 +40,7 @@
         paste0("    ", aa$id, extra, " TEXT", c(rep(",", nrow(aa) - 1), "")),
         ");"
     )
-    
+
     if (!endsWith(tolower(tabela), ".sql")) {
         tabela <- paste(tabela, "sql", sep = ".")
     }
