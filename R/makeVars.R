@@ -111,7 +111,7 @@
 
     cat("};\n\n")
 
-    cat("export const questionOrder: Array<string> = [\n    ")
+    cat("export const questionsOrder: Array<string> = [\n    ")
 
     order <- seq(nrow(aa))
 
