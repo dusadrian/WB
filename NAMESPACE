@@ -4,11 +4,13 @@ export(
     # makeSQL,
     # splitHtml,
     hideFiles,
+    htmlTranslate,
     makeVars
 )
 import(admisc)
 import(readxl)
 importFrom("stats", "na.omit")
+importFrom("utils", "file_test")
 importFrom("tools", "file_ext")
 importFrom("DBI", "dbConnect", "dbDisconnect", "dbGetQuery")
 importFrom("haven", "tagged_na", "write_sav", "write_dta")
